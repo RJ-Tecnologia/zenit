@@ -2,207 +2,171 @@
 
 App para organização de finanças pessoais
 
-## 🗺️ Roadmap
+## 📌 Visão do Produto
 
-⏱️ **Estimativa total:** **8 a 10 semanas**  
-🎯 **Objetivo:** Lançar um MVP funcional, simples e validável com usuários reais.
-
----
-
-## 🧠 FASE 0 — Alinhamento e Visão do Produto  
-**Duração:** 2 a 3 dias
-
-### Objetivos
-- Alinhar visão entre todos do time
-- Evitar retrabalho durante o desenvolvimento
-
-### Tarefas
-- [ ] Definir persona principal
-- [ ] Definir problema central resolvido pelo produto
-- [ ] Definir proposta de valor do MVP
-- [ ] Definir escopo fechado do MVP (o que entra e o que fica fora)
-- [ ] Criar backlog inicial de funcionalidades
-- [ ] Definir métricas básicas de sucesso
-  - [ ] Usuário criou conta
-  - [ ] Usuário cadastrou movimentações
-  - [ ] Usuário retornou ao app
+Este documento define a **visão estratégica inicial** do produto e deve servir como base
+para decisões de UX, funcionalidades e priorização durante o desenvolvimento do MVP.
 
 ---
 
-## 🎨 FASE 1 — UX / UI e Fluxos da Aplicação  
-**Duração:** 4 a 5 dias
+### 🧠 1. Persona Principal
 
-### Objetivos
-- Pensar nos fluxos antes de codar
-- Reduzir mudanças estruturais futuras
+Embora o produto tenha potencial para um público amplo, o **MVP será construído focando em uma persona principal**, garantindo clareza e consistência nas decisões.
 
-### Tarefas
-- [ ] Definir fluxo do usuário (cadastro → login → dashboard → movimentação)
-- [ ] Criar wireframes de baixa fidelidade:
-  - [ ] Login / Cadastro
-  - [ ] Dashboard
-  - [ ] Lista de movimentações
-  - [ ] Formulário de movimentação
-  - [ ] Configurações básicas
-- [ ] Definir padrões visuais:
-  - [ ] Cores principais
-  - [ ] Tipografia
-  - [ ] Layout base
-- [ ] Mapear componentes principais (Shadcn UI)
+#### 🎯 Persona do MVP
 
----
+**Nome fictício:** Lucas  
+**Idade:** 23–35 anos  
+**Profissão:** Estudante universitário, recém-formado ou profissional em início de carreira  
+**Renda:** Baixa a média  
+**Perfil tecnológico:** Usa apps no dia a dia, mas não é especialista em finanças
 
-## 🧱 FASE 2 — Setup do Projeto e Infraestrutura  
-**Duração:** 3 a 4 dias
+#### 📌 Características
+- Recebe salário ou bolsa mensal
+- Utiliza cartão de crédito com frequência
+- Já tentou organizar as finanças usando:
+  - planilhas
+  - bloco de notas
+  - controle “de cabeça”
+- Costuma perder a constância após alguns dias
 
-### Objetivos
-- Criar base sólida e organizada
-- Garantir consistência desde o início
+#### 😖 Dores
+- Não sabe exatamente para onde o dinheiro está indo
+- Se surpreende negativamente ao ver o extrato bancário
+- Sente que organizar as finanças dá muito trabalho
+- Desiste de ferramentas complexas
 
-### Tarefas
-- [ ] Criar repositório do projeto
-- [ ] Inicializar projeto Next.js (App Router)
-- [ ] Configurar TypeScript
-- [ ] Configurar ESLint e Prettier
-- [ ] Configurar TailwindCSS
-- [ ] Instalar e configurar Shadcn UI
-- [ ] Configurar variáveis de ambiente
-- [ ] Criar projeto no Supabase
-- [ ] Configurar Prisma:
-  - [ ] Conexão com banco
-  - [ ] Estrutura inicial
-  - [ ] Migrations iniciais
-- [ ] Configurar deploy inicial na Vercel
+#### 🎯 Objetivo
+> “Quero entender meu dinheiro e ter controle do mês sem perder tempo e sem complicação.”
 
 ---
 
-## 🗄️ FASE 3 — Modelagem de Dados e Regras de Negócio  
-**Duração:** 3 a 4 dias
+### ❗ 2. Problema Central Resolvido pelo Produto
 
-### Objetivos
-- Garantir integridade dos dados
-- Preparar base para o backend
+#### Problema bem definido
 
-### Tarefas
-- [ ] Modelar entidade User
-- [ ] Modelar entidade Transaction
-- [ ] Modelar entidade Category
-- [ ] Modelar entidade Subscription / Plan (básico)
-- [ ] Definir relacionamentos entre tabelas
-- [ ] Criar migrations no Prisma
-- [ ] Definir regras de negócio:
-  - [ ] Entrada vs saída
-  - [ ] Cálculo de saldo
-  - [ ] Categorias padrão
-- [ ] Criar seeds iniciais no banco
+> **Pessoas têm dificuldade em manter constância no controle financeiro porque as ferramentas existentes são complexas, pouco intuitivas e não geram clareza rápida sobre a situação financeira.**
+
+Ou de forma ainda mais direta:
+
+> **O usuário até tenta se organizar financeiramente, mas desiste porque o esforço é maior do que o valor percebido.**
+
+Este problema orienta decisões como:
+- simplicidade do produto
+- foco em insights rápidos
+- gamificação leve
+- escopo enxuto no MVP
 
 ---
 
-## 🔐 FASE 4 — Autenticação e Autorização  
-**Duração:** 3 a 4 dias
+### 💎 3. Proposta de Valor do MVP
 
-### Objetivos
-- Garantir acesso seguro
-- Isolar dados por usuário
+#### Proposta de valor principal
 
-### Tarefas
-- [ ] Configurar autenticação (Supabase Auth ou Clerk)
-- [ ] Implementar cadastro de usuário
-- [ ] Implementar login
-- [ ] Implementar logout
-- [ ] Proteger rotas privadas
-- [ ] Criar contexto global de autenticação
-- [ ] Testar fluxo completo de autenticação
+> **Um app simples e intuitivo que ajuda o usuário a entender para onde seu dinheiro vai, mês a mês, oferecendo clareza financeira sem complexidade.**
 
----
+#### Pilares da proposta de valor
+- Facilidade de uso
+- Clareza visual
+- Baixa curva de aprendizado
+- Feedback rápido de progresso
+- Estímulo à constância
 
-## 📡 FASE 5 — Backend (API e Regras de Negócio)  
-**Duração:** 7 a 9 dias
-
-### Objetivos
-- Implementar o core da aplicação
-
-### Tarefas
-- [ ] Criar estrutura base da API
-- [ ] Criar módulo de transactions
-- [ ] Criar módulo de categories
-- [ ] Implementar repositories
-- [ ] Implementar services
-- [ ] Criar endpoint para criar movimentação
-- [ ] Criar endpoint para listar movimentações por mês
-- [ ] Criar endpoint para editar movimentação
-- [ ] Criar endpoint para excluir movimentação
-- [ ] Implementar validações com Zod
-- [ ] Garantir isolamento de dados por usuário
-- [ ] Testar manualmente todas as rotas
+#### O que NÃO prometemos no MVP
+- Investimentos avançados
+- Planejamento financeiro complexo
+- Integrações bancárias automáticas
+- Metas financeiras sofisticadas
 
 ---
 
-## 🖥️ FASE 6 — Frontend (Funcionalidades Principais)  
-**Duração:** 7 a 10 dias
+## 📦 4. Escopo Fechado do MVP
 
-### Objetivos
-- Entregar valor real ao usuário
+#### ✅ O que ENTRA no MVP
 
-### Tarefas
-- [ ] Implementar layout base da aplicação
-- [ ] Implementar Dashboard
-  - [ ] Saldo do mês
-  - [ ] Total de entradas
-  - [ ] Total de saídas
-- [ ] Implementar gráficos:
-  - [ ] Entradas vs saídas
-  - [ ] Gastos por categoria
-- [ ] Criar tela de listagem de movimentações
-- [ ] Criar formulário de criação de movimentação
-- [ ] Criar formulário de edição de movimentação
-- [ ] Implementar filtro por mês
-- [ ] Integrar frontend com API (React Query)
-- [ ] Tratar estados de loading e erro
-
----
-
-## 🎮 FASE 7 — Gamificação Básica  
-**Duração:** 2 a 3 dias
-
-### Objetivos
-- Incentivar uso contínuo
-- Criar sensação de progresso
-
-### Tarefas
-- [ ] Implementar contador de dias ativos
-- [ ] Criar mensagem de “mês organizado”
-- [ ] Implementar indicador de progresso mensal
-- [ ] Adicionar feedback visual positivo
+**Funcionalidades essenciais**
+- Cadastro e login de usuários
+- Cadastro de movimentações financeiras:
+  - tipo (entrada / saída)
+  - data
+  - categoria
+  - descrição
+  - valor
+- Categorias padrão + categorias personalizadas
+- Visualização das movimentações por mês
+- Dashboard mensal com:
+  - saldo do mês
+  - total de entradas
+  - total de saídas
+  - gráficos simples
+- Gamificação básica (feedback visual)
+- Período de teste gratuito
+- Interface responsiva (mobile-first)
 
 ---
 
-## 🧪 FASE 8 — Testes, Ajustes e Refinamento  
-**Duração:** 4 a 5 dias
+#### ❌ O que NÃO entra no MVP (fica fora do escopo inicial)
 
-### Objetivos
-- Garantir estabilidade e boa UX
+- Exportação para PDF ou Excel
+- Comparação entre múltiplos meses
+- Metas financeiras avançadas
+- Planejamento anual
+- Contas compartilhadas
+- Integrações automáticas com bancos
+- Aplicativo mobile nativo
+- Relatórios financeiros avançados
 
-### Tarefas
-- [ ] Realizar testes manuais completos
-- [ ] Corrigir bugs encontrados
-- [ ] Ajustar UI/UX com base nos testes
-- [ ] Melhorar performance básica
-- [ ] Revisar segurança básica
-- [ ] Revisar textos e mensagens da aplicação
+**Regra de ouro do MVP:**  
+Se não for essencial para entender e controlar o **mês atual**, fica fora.
 
 ---
 
-## 🚀 FASE 9 — Preparação para Lançamento  
-**Duração:** 2 a 3 dias
+## 🧩 5. Backlog Inicial de Funcionalidades (MVP)
 
-### Objetivos
-- Colocar o MVP no ar com confiança
+#### 🔑 Core (obrigatório)
+- Autenticação de usuários
+- CRUD de movimentações financeiras
+- CRUD de categorias
+- Dashboard mensal
+- Filtro por mês
+- Cálculo automático de saldo
 
-### Tarefas
-- [ ] Revisar variáveis de ambiente em produção
-- [ ] Configurar domínio (se aplicável)
-- [ ] Criar landing page simples
-- [ ] Configurar período de trial (7 ou 14 dias)
-- [ ] Testar fluxo completo como usuário final
-- [ ] Definir canal de feedback inicial
+#### 🧠 Experiência do Usuário
+- Estados de vazio (quando não há dados)
+- Feedback visual ao cadastrar movimentações
+- Textos claros e linguagem simples
+
+#### 🎮 Gamificação Básica
+- Indicador de progresso mensal
+- Mensagem de “mês organizado”
+- Contador simples de uso/atividade
+
+---
+
+## 📊 6. Métricas Básicas de Sucesso do MVP
+
+O sucesso inicial do MVP será medido por **uso e hábito**, não por faturamento.
+
+#### 🎯 Métricas principais (ativação)
+- Usuário criou conta
+- Usuário cadastrou ao menos uma movimentação
+- Usuário retornou ao app após o primeiro acesso
+
+#### 📈 Métricas complementares
+- Média de movimentações por usuário
+- Dias consecutivos de uso
+- Retenção após 7 dias
+
+Se essas métricas forem positivas, o produto demonstra potencial de crescimento.
+
+---
+
+### 🧭 Resumo
+
+- **Persona:** jovem adulto em início de vida financeira  
+- **Problema:** ferramentas complexas e pouco motivadoras  
+- **Valor:** clareza financeira com simplicidade  
+- **Escopo:** controle mensal básico  
+- **Foco do MVP:** constância, entendimento e hábito  
+
+Este documento deve ser revisitado sempre que surgirem dúvidas sobre novas funcionalidades ou mudanças de escopo.
