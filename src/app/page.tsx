@@ -1,3 +1,3 @@
 export default function Home() {
-  return <h1>Zenit Finance</h1>
+  return <div>Zenit Finance</div>
 }

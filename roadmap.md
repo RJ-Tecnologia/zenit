@@ -33,12 +33,10 @@
 - Reduzir mudanças estruturais futuras
 
 ### Tarefas
-- [ ] Definir fluxo do usuário (cadastro → login → dashboard → movimentação)
-- [ ] Definir padrões visuais:
-  - [ ] Cores principais
-  - [ ] Tipografia
-  - [ ] Layout base
-- [ ] Mapear componentes principais (Shadcn UI)
+- [X] Definir padrões visuais:
+  - [X] Cores principais
+  - [X] Tipografia
+  - [X] Layout base
 
 ---
 
