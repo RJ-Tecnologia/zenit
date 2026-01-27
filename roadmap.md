@@ -72,14 +72,11 @@
 - Preparar base para o backend
 
 ### Tarefas
-- [ ] Modelar entidade User
-- [ ] Modelar entidade Transaction
-- [ ] Modelar entidade Category
-- [ ] Modelar entidade Subscription / Plan (básico)
-- [ ] Definir relacionamentos entre tabelas
-- [ ] Criar migrations no Prisma
-- [ ] Definir regras de negócio:
-  - [ ] Categorias padrão
+- [X] Modelar entidade User
+- [X] Modelar entidade Transaction
+- [X] Modelar entidade Category
+- [X] Definir relacionamentos entre tabelas
+- [X] Criar migrations no Prisma
 
 ---
 
