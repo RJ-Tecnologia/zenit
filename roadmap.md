@@ -82,7 +82,6 @@
   - [ ] Entrada vs saída
   - [ ] Cálculo de saldo
   - [ ] Categorias padrão
-- [ ] Criar seeds iniciais no banco
 
 ---
 
@@ -94,7 +93,7 @@
 - Isolar dados por usuário
 
 ### Tarefas
-- [ ] Configurar autenticação (Supabase Auth ou Clerk)
+- [X] Configurar autenticação (Supabase Auth ou Clerk)
 - [ ] Implementar cadastro de usuário
 - [ ] Implementar login
 - [ ] Implementar logout
