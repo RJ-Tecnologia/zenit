@@ -54,13 +54,13 @@
 - [X] Configurar Biome
 - [X] Configurar TailwindCSS
 - [X] Instalar e configurar Shadcn UI
-- [ ] Configurar variáveis de ambiente
-- [ ] Criar projeto no Supabase
-- [ ] Configurar Prisma:
-  - [ ] Conexão com banco
-  - [ ] Estrutura inicial
-  - [ ] Migrations iniciais
-- [ ] Configurar deploy inicial na Vercel
+- [X] Configurar variáveis de ambiente
+- [X] Criar projeto no Supabase
+- [X] Configurar Prisma:
+  - [X] Conexão com banco
+  - [X] Estrutura inicial
+  - [X] Migrations iniciais
+- [X] Configurar deploy inicial na Vercel
 
 ---
 
@@ -79,8 +79,6 @@
 - [ ] Definir relacionamentos entre tabelas
 - [ ] Criar migrations no Prisma
 - [ ] Definir regras de negócio:
-  - [ ] Entrada vs saída
-  - [ ] Cálculo de saldo
   - [ ] Categorias padrão
 
 ---
