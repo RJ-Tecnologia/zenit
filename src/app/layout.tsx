@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import './globals.css'
+import { ptBR } from '@clerk/localizations'
 import { ClerkProvider } from '@clerk/nextjs'
+import { shadcn } from '@clerk/themes'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -20,11 +22,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider localization={ptBR} appearance={{ theme: shadcn }}>
       <html lang="pt-BR">
-        <body
-          className={`dark ${plusJakartaSans.className} font-sans antialiased`}
-        >
+        <body className={`${plusJakartaSans.className} font-sans antialiased`}>
           {children}
         </body>
       </html>
