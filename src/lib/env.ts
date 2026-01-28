@@ -5,7 +5,8 @@ const envSchema = z.object({
   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
   CLERK_SECRET_KEY: z.string(),
   CLERK_WEBHOOK_SECRET: z.string(),
-  DATABASE_URL: z.string().startsWith('postgresql')
+  DATABASE_URL: z.string().startsWith('postgresql'),
+  DIRECT_URL: z.string().startsWith('postgresql')
 })
 
 const result = envSchema.safeParse(process.env)
