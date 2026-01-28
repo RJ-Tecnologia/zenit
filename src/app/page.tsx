@@ -1,4 +1,5 @@
 import { UserButton } from '@clerk/nextjs'
+import { ThemeToggle } from '@/components/theme-toggle'
 import {
   Card,
   CardContent,
@@ -19,7 +20,10 @@ export default function HomePage() {
               Dashboard Financeiro
             </p>
           </div>
-          <UserButton />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <UserButton />
+          </div>
         </div>
       </header>
 

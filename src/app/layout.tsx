@@ -4,6 +4,7 @@ import './globals.css'
 import { ptBR } from '@clerk/localizations'
 import { ClerkProvider } from '@clerk/nextjs'
 import { shadcn } from '@clerk/themes'
+import { ThemeProvider } from '@/components/theme-provider'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -23,9 +24,16 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider localization={ptBR} appearance={{ theme: shadcn }}>
-      <html lang="pt-BR">
+      <html lang="pt-BR" suppressHydrationWarning>
         <body className={`${plusJakartaSans.className} font-sans antialiased`}>
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem={false}
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

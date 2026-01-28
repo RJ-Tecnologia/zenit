@@ -89,12 +89,11 @@
 
 ### Tarefas
 - [X] Configurar autenticação (Supabase Auth ou Clerk)
-- [ ] Implementar cadastro de usuário
-- [ ] Implementar login
-- [ ] Implementar logout
-- [ ] Proteger rotas privadas
+- [X] Implementar cadastro de usuário
+- [X] Implementar login
+- [X] Implementar logout
+- [X] Proteger rotas privadas
 - [ ] Criar contexto global de autenticação
-- [ ] Testar fluxo completo de autenticação
 
 ---
 
