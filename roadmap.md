@@ -93,7 +93,6 @@
 - [X] Implementar login
 - [X] Implementar logout
 - [X] Proteger rotas privadas
-- [ ] Criar contexto global de autenticação
 
 ---
 
@@ -104,7 +103,6 @@
 - Implementar o core da aplicação
 
 ### Tarefas
-- [ ] Criar estrutura base da API
 - [ ] Criar módulo de transactions
 - [ ] Criar módulo de categories
 - [ ] Implementar repositories
