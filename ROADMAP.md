@@ -107,13 +107,12 @@
 - [ ] Criar módulo de categories
 - [ ] Implementar repositories
 - [ ] Implementar services
-- [ ] Criar endpoint para criar movimentação
-- [ ] Criar endpoint para listar movimentações por mês
-- [ ] Criar endpoint para editar movimentação
-- [ ] Criar endpoint para excluir movimentação
+- [ ] Criar server action para criar movimentação
+- [ ] Criar server action para listar movimentações por mês
+- [ ] Criar server action para editar movimentação
+- [ ] Criar server action para excluir movimentação
 - [ ] Implementar validações com Zod
 - [ ] Garantir isolamento de dados por usuário
-- [ ] Testar manualmente todas as rotas
 
 ---
 
