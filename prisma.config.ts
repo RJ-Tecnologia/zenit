@@ -1,4 +1,4 @@
-import { defineConfig } from 'prisma/config'
+import { defineConfig, type PrismaConfig } from 'prisma/config'
 import { env } from './src/lib/env'
 
 export default defineConfig({
@@ -9,4 +9,4 @@ export default defineConfig({
   datasource: {
     url: env.DIRECT_URL
   }
-})
+}) satisfies PrismaConfig
