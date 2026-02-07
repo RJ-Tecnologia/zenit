@@ -1,6 +1,7 @@
 import type { WebhookEvent } from '@clerk/nextjs/server'
 import { headers } from 'next/headers'
 import { Webhook } from 'svix'
+import { createDefaultCategories } from '@/actions/create-default-categories'
 import { env } from '@/lib/env'
 import { prisma as db } from '@/lib/prisma'
 
@@ -51,7 +52,7 @@ export async function POST(req: Request) {
     const email = email_addresses[0].email_address
     const name = `${first_name} ${last_name}`.trim()
 
-    await db.user.create({
+    const user = await db.user.create({
       data: {
         clerkUserId: id,
         email: email,
@@ -59,6 +60,8 @@ export async function POST(req: Request) {
         avatarUrl: image_url
       }
     })
+
+    await createDefaultCategories(user.id)
   }
 
   if (eventType === 'user.updated') {
