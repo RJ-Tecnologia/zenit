@@ -1,11 +1,20 @@
 import { auth } from '@clerk/nextjs/server'
 import { getTransactions } from '@/actions/get-transactions'
+import { getUserCategories } from '@/actions/get-user-categories'
 import { NewTransactionDialog } from '@/components/transaction/new-transaction-dialog'
 import { TransactionsList } from '@/components/transaction/transactions-list'
 
 export default async function TransactionsPage() {
   const { userId } = await auth()
-  const transactions = await getTransactions(userId as string)
+
+  if (!userId) {
+    throw new Error('User not authenticated!')
+  }
+
+  const [transactions, categories] = await Promise.all([
+    getTransactions(userId),
+    getUserCategories(userId)
+  ])
 
   return (
     <div className="container mx-auto py-6 px-4 md:py-10">
@@ -17,7 +26,7 @@ export default async function TransactionsPage() {
           </p>
         </div>
 
-        <NewTransactionDialog />
+        <NewTransactionDialog categories={categories} />
       </div>
 
       <TransactionsList transactions={transactions} />

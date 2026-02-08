@@ -5,6 +5,7 @@ import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod/v3'
+import type { Category } from '@/generated/prisma/client'
 import { Button } from '../ui/button'
 import {
   Dialog,
@@ -24,6 +25,10 @@ import {
   SelectValue
 } from '../ui/select'
 
+interface NewTransactionDialogProps {
+  categories: Category[]
+}
+
 const newTransactionformSchema = z.object({
   title: z.string().min(1, { message: 'O campo é obrigatório' }),
   type: z.enum(['INCOME', 'OUTCOME']),
@@ -35,7 +40,10 @@ const newTransactionformSchema = z.object({
 
 type NewTransactionformSchema = z.infer<typeof newTransactionformSchema>
 
-export function NewTransactionDialog() {
+export function NewTransactionDialog({
+  categories
+}: NewTransactionDialogProps) {
+  console.log(categories)
   const [open, setOpen] = useState(false)
 
   const form = useForm<NewTransactionformSchema>({
@@ -44,7 +52,8 @@ export function NewTransactionDialog() {
       title: '',
       description: '',
       type: 'INCOME',
-      amount: 0
+      amount: 0,
+      categoryId: categories[0]?.id
     }
   })
 
@@ -159,13 +168,14 @@ export function NewTransactionDialog() {
                         <SelectValue placeholder="Selecione a categoria" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="trabalho">Trabalho</SelectItem>
-                        <SelectItem value="mercado">Mercado</SelectItem>
-                        <SelectItem value="investimento">
-                          Investimento
-                        </SelectItem>
-                        <SelectItem value="alimentacao">Alimentação</SelectItem>
-                        <SelectItem value="outros">Outros</SelectItem>
+                        {categories.map((category) => {
+                          console.log(category.name)
+                          return (
+                            <SelectItem key={category.id} value={category.id}>
+                              {category.name}
+                            </SelectItem>
+                          )
+                        })}
                       </SelectContent>
                     </Select>
                   </div>
