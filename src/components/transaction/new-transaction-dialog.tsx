@@ -1,11 +1,17 @@
 'use client'
 
+import { useAuth } from '@clerk/nextjs'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Plus } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useMemo, useState, useTransition } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { z } from 'zod/v3'
+import { toast } from 'sonner'
+import { registerTransaction } from '@/actions/register-transaction'
 import type { Category } from '@/generated/prisma/client'
+import {
+  type NewTransactionformSchema,
+  newTransactionformSchema
+} from '@/schemas/new-transaction-schema'
 import { Button } from '../ui/button'
 import {
   Dialog,
@@ -29,22 +35,12 @@ interface NewTransactionDialogProps {
   categories: Category[]
 }
 
-const newTransactionformSchema = z.object({
-  title: z.string().min(1, { message: 'O campo é obrigatório' }),
-  type: z.enum(['INCOME', 'OUTCOME']),
-  amount: z.coerce.number().gt(0, { message: 'O valor deve ser maior que 0' }),
-  description: z.string().optional(),
-  categoryId: z.string({ message: 'Campo obrigatório' }).uuid(),
-  date: z.date({ message: 'Campo obrigatório' })
-})
-
-type NewTransactionformSchema = z.infer<typeof newTransactionformSchema>
-
 export function NewTransactionDialog({
   categories
 }: NewTransactionDialogProps) {
-  console.log(categories)
   const [open, setOpen] = useState(false)
+  const [isCreatingTransaction, setIsCreatingTransaction] = useTransition()
+  const { userId } = useAuth()
 
   const form = useForm<NewTransactionformSchema>({
     resolver: zodResolver(newTransactionformSchema),
@@ -57,8 +53,37 @@ export function NewTransactionDialog({
     }
   })
 
+  const selectedType = form.watch('type')
+
+  const filteredCategories = useMemo(() => {
+    return categories.filter((category) => {
+      if (category.scope === 'BOTH') return true
+      return category.scope === selectedType
+    })
+  }, [categories, selectedType])
+
+  useEffect(() => {
+    const currentCategoryId = form.getValues('categoryId')
+    const isCategoryAvailable = filteredCategories.some(
+      (cat) => cat.id === currentCategoryId
+    )
+
+    if (!isCategoryAvailable && filteredCategories.length > 0) {
+      form.setValue('categoryId', filteredCategories[0].id)
+    }
+  }, [filteredCategories, form])
+
   function handleSubmit(data: NewTransactionformSchema) {
-    console.log(data)
+    setIsCreatingTransaction(async () => {
+      await registerTransaction({
+        transaction: data,
+        clerkUserId: userId as string
+      })
+
+      setOpen(false)
+
+      toast.success('Movimentação cadastrada!')
+    })
   }
 
   return (
@@ -168,14 +193,11 @@ export function NewTransactionDialog({
                         <SelectValue placeholder="Selecione a categoria" />
                       </SelectTrigger>
                       <SelectContent>
-                        {categories.map((category) => {
-                          console.log(category.name)
-                          return (
-                            <SelectItem key={category.id} value={category.id}>
-                              {category.name}
-                            </SelectItem>
-                          )
-                        })}
+                        {filteredCategories.map((category) => (
+                          <SelectItem key={category.id} value={category.id}>
+                            {category.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -252,10 +274,15 @@ export function NewTransactionDialog({
                 variant="outline"
                 className="flex-1"
                 onClick={() => setOpen(false)}
+                disabled={isCreatingTransaction}
               >
                 Cancelar
               </Button>
-              <Button type="submit" className="flex-1">
+              <Button
+                type="submit"
+                className="flex-1"
+                disabled={isCreatingTransaction}
+              >
                 Adicionar
               </Button>
             </div>

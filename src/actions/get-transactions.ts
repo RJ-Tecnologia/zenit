@@ -8,8 +8,15 @@ export async function getTransactions(clerkUserId: string) {
       user: {
         clerkUserId
       }
+    },
+    include: {
+      category: {
+        select: {
+          name: true
+        }
+      }
     }
   })
 
-  return transactions
+  return transactions.map((t) => ({ ...t, amount: t.amount.toString() }))
 }

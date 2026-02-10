@@ -4,6 +4,7 @@ import './globals.css'
 import { ptBR } from '@clerk/localizations'
 import { ClerkProvider } from '@clerk/nextjs'
 import { shadcn } from '@clerk/themes'
+import { Toaster } from 'sonner'
 import { ThemeProvider } from '@/components/theme-provider'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -32,6 +33,7 @@ export default function RootLayout({
             enableSystem={false}
             disableTransitionOnChange
           >
+            <Toaster richColors position="top-center" />
             {children}
           </ThemeProvider>
         </body>

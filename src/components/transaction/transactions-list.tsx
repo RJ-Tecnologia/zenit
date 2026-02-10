@@ -1,10 +1,13 @@
 'use client'
 
-import { ArrowDownCircle, ArrowUpCircle, Badge, Table } from 'lucide-react'
-import type { Transaction } from '@/generated/prisma/client'
-import { formatCurrency, formatDateTime } from '@/lib/utils'
+import { ArrowDownCircleIcon, ArrowUpCircleIcon } from 'lucide-react'
+import type { SerializedTransaction } from '@/types/serialized-transaction'
+import { formatCurrency } from '@/utils/format-currency'
+import { formatDateTime } from '@/utils/format-datetime'
+import { Badge } from '../ui/badge'
 import { Card } from '../ui/card'
 import {
+  Table,
   TableBody,
   TableCell,
   TableHead,
@@ -13,7 +16,7 @@ import {
 } from '../ui/table'
 
 interface TransactionListProps {
-  transactions: Transaction[]
+  transactions: SerializedTransaction[]
 }
 
 export function TransactionsList({ transactions }: TransactionListProps) {
@@ -39,19 +42,19 @@ export function TransactionsList({ transactions }: TransactionListProps) {
                 <TableRow key={transaction.id}>
                   <TableCell>
                     {transaction.type === 'INCOME' ? (
-                      <ArrowUpCircle className="h-5 w-5 text-green-600 dark:text-green-500" />
+                      <ArrowUpCircleIcon className="size-5 text-green-600 dark:text-green-500" />
                     ) : (
-                      <ArrowDownCircle className="h-5 w-5 text-red-600 dark:text-red-500" />
+                      <ArrowDownCircleIcon className="size-5 text-red-600 dark:text-red-500" />
                     )}
                   </TableCell>
                   <TableCell className="font-medium">
                     {transaction.title}
                   </TableCell>
                   <TableCell className="hidden md:table-cell text-muted-foreground">
-                    {transaction.description || '-'}
+                    {transaction.description ?? '-'}
                   </TableCell>
                   <TableCell>
-                    <Badge>{transaction.categoryId}</Badge>
+                    <Badge>{transaction.category.name}</Badge>
                   </TableCell>
                   <TableCell className="hidden sm:table-cell text-muted-foreground">
                     {formatDateTime(transaction.date)}
@@ -64,7 +67,7 @@ export function TransactionsList({ transactions }: TransactionListProps) {
                     }`}
                   >
                     {transaction.type === 'INCOME' ? '+' : '-'}
-                    {formatCurrency(transaction.amount.toNumber())}
+                    {formatCurrency(transaction.amount)}
                   </TableCell>
                 </TableRow>
               ))}
