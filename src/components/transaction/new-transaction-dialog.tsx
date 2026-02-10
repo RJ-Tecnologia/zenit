@@ -3,6 +3,7 @@
 import { useAuth } from '@clerk/nextjs'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Plus } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState, useTransition } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -41,6 +42,7 @@ export function NewTransactionDialog({
   const [open, setOpen] = useState(false)
   const [isCreatingTransaction, setIsCreatingTransaction] = useTransition()
   const { userId } = useAuth()
+  const router = useRouter()
 
   const form = useForm<NewTransactionformSchema>({
     resolver: zodResolver(newTransactionformSchema),
@@ -81,6 +83,7 @@ export function NewTransactionDialog({
       })
 
       setOpen(false)
+      router.refresh()
 
       toast.success('Movimentação cadastrada!')
     })

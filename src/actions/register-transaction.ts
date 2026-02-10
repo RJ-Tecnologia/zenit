@@ -1,5 +1,6 @@
 'use server'
 
+import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma'
 import type { NewTransactionformSchema } from '@/schemas/new-transaction-schema'
 
@@ -29,4 +30,6 @@ export async function registerTransaction({
       userId: user.id
     }
   })
+
+  revalidatePath('/transactions')
 }
