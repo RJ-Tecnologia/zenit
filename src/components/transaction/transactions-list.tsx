@@ -1,6 +1,13 @@
 'use client'
 
-import { ArrowDownCircleIcon, ArrowUpCircleIcon } from 'lucide-react'
+import {
+  ArrowDownCircleIcon,
+  ArrowUpCircleIcon,
+  PencilIcon,
+  Trash2Icon
+} from 'lucide-react'
+import { toast } from 'sonner'
+import { deleteTransaction } from '@/actions/delete-transaction'
 import type { SerializedTransaction } from '@/types/serialized-transaction'
 import { formatCurrency } from '@/utils/format-currency'
 import { formatDateTime } from '@/utils/format-datetime'
@@ -20,6 +27,12 @@ interface TransactionListProps {
 }
 
 export function TransactionsList({ transactions }: TransactionListProps) {
+  async function handleDelete(transactionId: string) {
+    await deleteTransaction(transactionId)
+
+    toast.success('Movimentação deletada!')
+  }
+
   return (
     <Card>
       {transactions.length > 0 && (
@@ -35,6 +48,7 @@ export function TransactionsList({ transactions }: TransactionListProps) {
                 <TableHead>Categoria</TableHead>
                 <TableHead className="hidden sm:table-cell">Data</TableHead>
                 <TableHead className="text-right">Valor</TableHead>
+                <TableHead className="w-24 text-right">Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -68,6 +82,25 @@ export function TransactionsList({ transactions }: TransactionListProps) {
                   >
                     {transaction.type === 'INCOME' ? '+' : '-'}
                     {formatCurrency(transaction.amount)}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        type="button"
+                        className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                        aria-label="Editar transação"
+                      >
+                        <PencilIcon className="size-4" />
+                      </button>
+                      <button
+                        type="button"
+                        className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                        aria-label="Excluir transação"
+                        onClick={() => handleDelete(transaction.id)}
+                      >
+                        <Trash2Icon className="size-4" />
+                      </button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
