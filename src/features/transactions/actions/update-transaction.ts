@@ -2,24 +2,29 @@
 
 import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma'
-import type { NewTransactionformSchema } from '@/schemas/new-transaction-schema'
+import type { NewTransactionformSchema } from '../schemas/new-transaction-schema'
 
-interface RegisterTransactionProps {
+interface UpdateTransactionProps {
+  transactionId: string
   transaction: NewTransactionformSchema
   clerkUserId: string
 }
 
-export async function registerTransaction({
+export async function updateTransaction({
+  transactionId,
   transaction,
   clerkUserId
-}: RegisterTransactionProps) {
+}: UpdateTransactionProps) {
   const user = await prisma.user.findUniqueOrThrow({
     where: {
       clerkUserId
     }
   })
 
-  await prisma.transaction.create({
+  await prisma.transaction.update({
+    where: {
+      id: transactionId
+    },
     data: {
       title: transaction.title,
       date: transaction.date,

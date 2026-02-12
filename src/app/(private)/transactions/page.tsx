@@ -1,9 +1,9 @@
 import { auth } from '@clerk/nextjs/server'
 import { PlusIcon } from 'lucide-react'
-import { getTransactions } from '@/actions/get-transactions'
-import { getUserCategories } from '@/actions/get-user-categories'
-import { SaveTransactionDialog } from '@/components/transaction/save-transaction-dialog'
-import { TransactionsList } from '@/components/transaction/transactions-list'
+import { getTransactions } from '@/features/transactions/actions/get-transactions'
+import { getUserCategories } from '@/features/categories/actions/get-user-categories'
+import { SaveTransactionDialog } from '@/features/transactions/components/save-transaction-dialog'
+import { TransactionsList } from '@/features/transactions/components/transactions-list'
 import { Button } from '@/components/ui/button'
 
 export default async function TransactionsPage() {

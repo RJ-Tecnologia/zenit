@@ -7,13 +7,8 @@ import {
   Trash2Icon
 } from 'lucide-react'
 import { toast } from 'sonner'
-import { deleteTransaction } from '@/actions/delete-transaction'
-import type { Category } from '@/generated/prisma/client'
-import type { SerializedTransaction } from '@/types/serialized-transaction'
-import { formatCurrency } from '@/utils/format-currency'
-import { formatDateTime } from '@/utils/format-datetime'
-import { Badge } from '../ui/badge'
-import { Card } from '../ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Card } from '@/components/ui/card'
 import {
   Table,
   TableBody,
@@ -21,7 +16,12 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '../ui/table'
+} from '@/components/ui/table'
+import type { Category } from '@/generated/prisma/client'
+import { formatCurrency } from '@/utils/format-currency'
+import { formatDateTime } from '@/utils/format-datetime'
+import { deleteTransaction } from '../actions/delete-transaction'
+import type { SerializedTransaction } from '../types/serialized-transaction'
 import { SaveTransactionDialog } from './save-transaction-dialog'
 
 interface TransactionListProps {
