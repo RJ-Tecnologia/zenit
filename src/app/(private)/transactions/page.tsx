@@ -1,8 +1,10 @@
 import { auth } from '@clerk/nextjs/server'
+import { PlusIcon } from 'lucide-react'
 import { getTransactions } from '@/actions/get-transactions'
 import { getUserCategories } from '@/actions/get-user-categories'
-import { NewTransactionDialog } from '@/components/transaction/new-transaction-dialog'
+import { SaveTransactionDialog } from '@/components/transaction/save-transaction-dialog'
 import { TransactionsList } from '@/components/transaction/transactions-list'
+import { Button } from '@/components/ui/button'
 
 export default async function TransactionsPage() {
   const { userId } = await auth()
@@ -26,10 +28,18 @@ export default async function TransactionsPage() {
           </p>
         </div>
 
-        <NewTransactionDialog categories={categories} />
+        <SaveTransactionDialog
+          trigger={
+            <Button className="gap-2">
+              <PlusIcon className="size-4" />
+              Nova Transação
+            </Button>
+          }
+          categories={categories}
+        />
       </div>
 
-      <TransactionsList transactions={transactions} />
+      <TransactionsList transactions={transactions} categories={categories} />
     </div>
   )
 }

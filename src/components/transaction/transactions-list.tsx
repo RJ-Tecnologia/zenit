@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { deleteTransaction } from '@/actions/delete-transaction'
+import type { Category } from '@/generated/prisma/client'
 import type { SerializedTransaction } from '@/types/serialized-transaction'
 import { formatCurrency } from '@/utils/format-currency'
 import { formatDateTime } from '@/utils/format-datetime'
@@ -21,12 +22,17 @@ import {
   TableHeader,
   TableRow
 } from '../ui/table'
+import { SaveTransactionDialog } from './save-transaction-dialog'
 
 interface TransactionListProps {
   transactions: SerializedTransaction[]
+  categories: Category[]
 }
 
-export function TransactionsList({ transactions }: TransactionListProps) {
+export function TransactionsList({
+  transactions,
+  categories
+}: TransactionListProps) {
   async function handleDelete(transactionId: string) {
     await deleteTransaction(transactionId)
 
@@ -85,13 +91,19 @@ export function TransactionsList({ transactions }: TransactionListProps) {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-2">
-                      <button
-                        type="button"
-                        className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                        aria-label="Editar transação"
-                      >
-                        <PencilIcon className="size-4" />
-                      </button>
+                      <SaveTransactionDialog
+                        trigger={
+                          <button
+                            type="button"
+                            className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                            aria-label="Editar transação"
+                          >
+                            <PencilIcon className="size-4" />
+                          </button>
+                        }
+                        categories={categories}
+                        currentTransaction={transaction}
+                      />
                       <button
                         type="button"
                         className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"

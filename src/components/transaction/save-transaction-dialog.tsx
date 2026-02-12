@@ -2,17 +2,18 @@
 
 import { useAuth } from '@clerk/nextjs'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState, useTransition } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { registerTransaction } from '@/actions/register-transaction'
+import { updateTransaction } from '@/actions/update-transaction'
 import type { Category } from '@/generated/prisma/client'
 import {
   type NewTransactionformSchema,
   newTransactionformSchema
 } from '@/schemas/new-transaction-schema'
+import type { SerializedTransaction } from '@/types/serialized-transaction'
 import { Button } from '../ui/button'
 import {
   Dialog,
@@ -32,26 +33,33 @@ import {
   SelectValue
 } from '../ui/select'
 
-interface NewTransactionDialogProps {
+interface SaveTransactionDialogProps {
+  trigger: React.ReactNode
   categories: Category[]
+  currentTransaction?: SerializedTransaction
 }
 
-export function NewTransactionDialog({
-  categories
-}: NewTransactionDialogProps) {
+export function SaveTransactionDialog({
+  trigger,
+  categories,
+  currentTransaction
+}: SaveTransactionDialogProps) {
   const [open, setOpen] = useState(false)
   const [isCreatingTransaction, setIsCreatingTransaction] = useTransition()
   const { userId } = useAuth()
   const router = useRouter()
 
+  const isUpdate = currentTransaction !== undefined
+
   const form = useForm<NewTransactionformSchema>({
     resolver: zodResolver(newTransactionformSchema),
     defaultValues: {
-      title: '',
-      description: '',
-      type: 'INCOME',
-      amount: 0,
-      categoryId: categories[0]?.id
+      title: currentTransaction?.title ?? '',
+      description: currentTransaction?.description ?? '',
+      type: currentTransaction?.type ?? 'INCOME',
+      amount: parseFloat(currentTransaction?.amount ?? '0'),
+      categoryId: currentTransaction?.categoryId ?? categories[0]?.id,
+      date: currentTransaction?.date
     }
   })
 
@@ -77,31 +85,38 @@ export function NewTransactionDialog({
 
   function handleSubmit(data: NewTransactionformSchema) {
     setIsCreatingTransaction(async () => {
-      await registerTransaction({
-        transaction: data,
-        clerkUserId: userId as string
-      })
+      if (isUpdate) {
+        await updateTransaction({
+          transactionId: currentTransaction.id,
+          transaction: data,
+          clerkUserId: userId as string
+        })
+      } else {
+        await registerTransaction({
+          transaction: data,
+          clerkUserId: userId as string
+        })
+      }
 
       setOpen(false)
       router.refresh()
 
-      toast.success('Movimentação cadastrada!')
+      toast.success(`Movimentação ${isUpdate ? 'Atualizada' : 'Cadastrada'}!`)
     })
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="gap-2">
-          <Plus className="size-4" />
-          Nova Transação
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Nova Transação</DialogTitle>
+          <DialogTitle>
+            {isUpdate ? 'Editar Transação' : 'Nova Transação'}
+          </DialogTitle>
           <DialogDescription>
-            Adicione uma nova transação ao seu registro financeiro
+            {isUpdate
+              ? 'Atualize os dados da sua transação.'
+              : 'Adicione uma nova transação ao seu registro financeiro'}
           </DialogDescription>
         </DialogHeader>
         <form className="pt-4" onSubmit={form.handleSubmit(handleSubmit)}>
@@ -286,7 +301,7 @@ export function NewTransactionDialog({
                 className="flex-1"
                 disabled={isCreatingTransaction}
               >
-                Adicionar
+                {isUpdate ? 'Atualizar' : 'Adicionar'}
               </Button>
             </div>
           </FieldGroup>

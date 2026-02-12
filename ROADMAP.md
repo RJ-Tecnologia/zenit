@@ -60,7 +60,7 @@
   - [X] Conexão com banco
   - [X] Estrutura inicial
   - [X] Migrations iniciais
-- [X] Configurar deploy inicial na Vercel
+- [X] Configurar deploy inicial na Netlify
 
 ---
 
@@ -96,23 +96,19 @@
 
 ---
 
-## 📡 FASE 5 — Backend (API e Regras de Negócio)  
+## 📡 FASE 5 — Backend (Actions e Regras de Negócio)  
 **Duração:** 7 a 9 dias
 
 ### Objetivos
 - Implementar o core da aplicação
 
 ### Tarefas
-- [ ] Criar módulo de transactions
-- [ ] Criar módulo de categories
-- [ ] Implementar repositories
-- [ ] Implementar services
-- [ ] Criar server action para criar movimentação
-- [ ] Criar server action para listar movimentações por mês
-- [ ] Criar server action para editar movimentação
-- [ ] Criar server action para excluir movimentação
-- [ ] Implementar validações com Zod
-- [ ] Garantir isolamento de dados por usuário
+- [X] Criar server action para criar movimentação
+- [X] Criar server action para listar movimentações por mês
+- [X] Criar server action para editar movimentação
+- [X] Criar server action para excluir movimentação
+- [X] Implementar validações com Zod
+- [X] Garantir isolamento de dados por usuário
 
 ---
 
@@ -123,7 +119,7 @@
 - Entregar valor real ao usuário
 
 ### Tarefas
-- [ ] Implementar layout base da aplicação
+- [X] Implementar layout base da aplicação
 - [ ] Implementar Dashboard
   - [ ] Saldo do mês
   - [ ] Total de entradas
