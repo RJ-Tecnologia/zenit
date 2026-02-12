@@ -1,23 +1,14 @@
-import { auth } from '@clerk/nextjs/server'
-import { PlusIcon } from 'lucide-react'
-import { getTransactions } from '@/features/transactions/actions/get-transactions'
-import { getUserCategories } from '@/features/categories/actions/get-user-categories'
-import { SaveTransactionDialog } from '@/features/transactions/components/save-transaction-dialog'
-import { TransactionsList } from '@/features/transactions/components/transactions-list'
-import { Button } from '@/components/ui/button'
+import type { Metadata } from 'next'
+import { Suspense } from 'react'
+import { Skeleton } from '@/components/ui/skeleton'
+import { NewTransactionButton } from './_components/new-transaction-button'
+import { TransactionsContent } from './_components/transactions-content'
 
-export default async function TransactionsPage() {
-  const { userId } = await auth()
+export const metadata: Metadata = {
+  title: 'Transações - Zenit Finance'
+}
 
-  if (!userId) {
-    throw new Error('User not authenticated!')
-  }
-
-  const [transactions, categories] = await Promise.all([
-    getTransactions(userId),
-    getUserCategories(userId)
-  ])
-
+export default function TransactionsPage() {
   return (
     <div className="container mx-auto py-6 px-4 md:py-10">
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -28,18 +19,22 @@ export default async function TransactionsPage() {
           </p>
         </div>
 
-        <SaveTransactionDialog
-          trigger={
-            <Button className="gap-2">
-              <PlusIcon className="size-4" />
-              Nova Transação
-            </Button>
-          }
-          categories={categories}
-        />
+        <Suspense fallback={<Skeleton className="h-10 w-40" />}>
+          <NewTransactionButton />
+        </Suspense>
       </div>
 
-      <TransactionsList transactions={transactions} categories={categories} />
+      <Suspense
+        fallback={
+          <div className="space-y-4">
+            {[...Array(5)].map((_, i) => (
+              <Skeleton key={i} className="h-20 w-full" />
+            ))}
+          </div>
+        }
+      >
+        <TransactionsContent />
+      </Suspense>
     </div>
   )
 }
