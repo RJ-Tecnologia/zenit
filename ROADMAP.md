@@ -120,10 +120,10 @@
 
 ### Tarefas
 - [X] Implementar layout base da aplicação
-- [ ] Implementar Dashboard
-  - [ ] Saldo do mês
-  - [ ] Total de entradas
-  - [ ] Total de saídas
+- [X] Implementar Dashboard
+  - [X] Saldo do mês
+  - [X] Total de entradas
+  - [X] Total de saídas
 - [ ] Implementar gráficos:
   - [ ] Entradas vs saídas
   - [ ] Gastos por categoria
@@ -131,7 +131,6 @@
 - [ ] Criar formulário de criação de movimentação
 - [ ] Criar formulário de edição de movimentação
 - [ ] Implementar filtro por mês
-- [ ] Integrar frontend com API (React Query)
 - [ ] Tratar estados de loading e erro
 
 ---

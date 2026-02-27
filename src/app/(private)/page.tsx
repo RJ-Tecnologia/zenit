@@ -1,3 +1,4 @@
+import { auth } from '@clerk/nextjs/server'
 import type { Metadata } from 'next'
 import {
   Card,
@@ -6,12 +7,17 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
+import { getFinanceSummary } from '@/features/transactions/actions/get-finance-summary'
+import { formatCurrency } from '@/utils/format-currency'
 
 export const metadata: Metadata = {
   title: 'Dashboard - Zenit Finance'
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { userId } = await auth()
+  const summary = await getFinanceSummary(userId as string)
+
   return (
     <main className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -43,7 +49,9 @@ export default function HomePage() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">R$ 12.450,00</div>
+            <div className="text-2xl font-bold">
+              {formatCurrency(summary.balance)}
+            </div>
             <p className="text-xs text-muted-foreground">
               +20.1% em relação ao mês passado
             </p>
@@ -70,7 +78,9 @@ export default function HomePage() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">R$ 8.750,00</div>
+            <div className="text-2xl font-bold">
+              {formatCurrency(summary.income)}
+            </div>
             <p className="text-xs text-muted-foreground">
               +180.1% em relação ao mês passado
             </p>
@@ -96,7 +106,9 @@ export default function HomePage() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">R$ 4.300,00</div>
+            <div className="text-2xl font-bold">
+              {formatCurrency(summary.outcome)}
+            </div>
             <p className="text-xs text-muted-foreground">
               +19% em relação ao mês passado
             </p>
@@ -121,7 +133,9 @@ export default function HomePage() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+573</div>
+            <div className="text-2xl font-bold">
+              {summary.transactionsCount}
+            </div>
             <p className="text-xs text-muted-foreground">
               +201 desde o mês passado
             </p>
@@ -135,57 +149,29 @@ export default function HomePage() {
           <CardHeader>
             <CardTitle>Transações Recentes</CardTitle>
             <CardDescription>
-              Você realizou 265 transações este mês
+              Você realizou {summary.transactionsCount} transações este mês
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-8">
-              <div className="flex items-center">
-                <div className="ml-4 space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    Supermercado
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    Categoria: Alimentação
-                  </p>
+              {summary.lastTransactions.map((transaction) => (
+                <div key={transaction.id} className="flex items-center">
+                  <div className="ml-4 space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {transaction.title}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Categoria: {transaction.category}
+                    </p>
+                  </div>
+                  <div
+                    data-type={transaction.type}
+                    className="ml-auto font-medium data-[type=INCOME]:text-green-600 data-[type=OUTCOME]:text-red-600"
+                  >
+                    {formatCurrency(transaction.amount)}
+                  </div>
                 </div>
-                <div className="ml-auto font-medium text-red-600">
-                  -R$ 250,00
-                </div>
-              </div>
-              <div className="flex items-center">
-                <div className="ml-4 space-y-1">
-                  <p className="text-sm font-medium leading-none">Salário</p>
-                  <p className="text-sm text-muted-foreground">
-                    Categoria: Receita
-                  </p>
-                </div>
-                <div className="ml-auto font-medium text-green-600">
-                  +R$ 5.000,00
-                </div>
-              </div>
-              <div className="flex items-center">
-                <div className="ml-4 space-y-1">
-                  <p className="text-sm font-medium leading-none">Internet</p>
-                  <p className="text-sm text-muted-foreground">
-                    Categoria: Contas
-                  </p>
-                </div>
-                <div className="ml-auto font-medium text-red-600">
-                  -R$ 99,90
-                </div>
-              </div>
-              <div className="flex items-center">
-                <div className="ml-4 space-y-1">
-                  <p className="text-sm font-medium leading-none">Academia</p>
-                  <p className="text-sm text-muted-foreground">
-                    Categoria: Saúde
-                  </p>
-                </div>
-                <div className="ml-auto font-medium text-red-600">
-                  -R$ 120,00
-                </div>
-              </div>
+              ))}
             </div>
           </CardContent>
         </Card>
