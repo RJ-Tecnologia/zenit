@@ -6,19 +6,21 @@ export interface CategorySummary {
   amount: number
 }
 
+export interface TransactionSummary {
+  id: string
+  title: string
+  date: Date
+  amount: number
+  category: string
+  type: TransactionType
+}
+
 export interface FinanceSummary {
   balance: number
   income: number
   outcome: number
   transactionsCount: number
-  lastTransactions: {
-    id: string
-    title: string
-    date: Date
-    amount: number
-    category: string
-    type: TransactionType
-  }[]
+  lastTransactions: TransactionSummary[]
   outcomeCategoriesSummary: CategorySummary[]
   incomeCategoriesSummary: CategorySummary[]
 }
