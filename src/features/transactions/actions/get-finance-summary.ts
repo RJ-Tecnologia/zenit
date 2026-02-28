@@ -1,15 +1,28 @@
 'use server'
 
+import { endOfMonth, startOfMonth } from 'date-fns'
 import { prisma } from '@/lib/prisma'
 import type { FinanceSummary } from '../types/finance-summary'
 
-export async function getFinanceSummary(
+interface GetFinanceSummaryProps {
   clerkUserId: string
-): Promise<FinanceSummary> {
+  startDate?: Date
+  endDate?: Date
+}
+
+export async function getFinanceSummary({
+  clerkUserId,
+  startDate = startOfMonth(new Date()),
+  endDate = endOfMonth(new Date())
+}: GetFinanceSummaryProps): Promise<FinanceSummary> {
   const transactions = await prisma.transaction.findMany({
     where: {
       user: {
         clerkUserId
+      },
+      date: {
+        gte: startDate,
+        lte: endDate
       }
     },
     orderBy: {

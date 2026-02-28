@@ -10,7 +10,9 @@ import { TransactionsCountCard } from './transactions-count-card'
 
 export async function DashboardSummary() {
   const { userId } = await auth()
-  const summary = await getFinanceSummary(userId as string)
+  const summary = await getFinanceSummary({
+    clerkUserId: userId as string
+  })
 
   return (
     <>
