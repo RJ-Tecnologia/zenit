@@ -1,22 +1,13 @@
-import { auth } from '@clerk/nextjs/server'
 import type { Metadata } from 'next'
-import { getFinanceSummary } from '@/features/transactions/actions/get-finance-summary'
-import { BalanceCard } from './_components/balance-card'
-import { IncomeByCategoryCard } from './_components/income-by-category-card'
-import { IncomesCard } from './_components/incomes-card'
-import { OutcomeByCategoryCard } from './_components/outcome-by-category-card'
-import { OutcomesCard } from './_components/outcomes-card'
-import { RecentTransactionsCard } from './_components/recent-transactions-card'
-import { TransactionsCountCard } from './_components/transactions-count-card'
+import { Suspense } from 'react'
+import { DashboardSkeleton } from './_components/dashboard-skeleton'
+import { DashboardSummary } from './_components/dashboard-summary'
 
 export const metadata: Metadata = {
   title: 'Dashboard - Zenit Finance'
 }
 
-export default async function HomePage() {
-  const { userId } = await auth()
-  const summary = await getFinanceSummary(userId as string)
-
+export default function HomePage() {
   return (
     <main className="container mx-auto px-4 py-8">
       <div className="mb-8">
@@ -28,29 +19,9 @@ export default async function HomePage() {
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <BalanceCard balance={summary.balance} />
-        <IncomesCard income={summary.income} />
-        <OutcomesCard outcome={summary.outcome} />
-        <TransactionsCountCard transactionsCount={summary.transactionsCount} />
-      </div>
-
-      <div className="mt-8 flex flex-col gap-4">
-        <RecentTransactionsCard
-          transactionsCount={summary.transactionsCount}
-          transactions={summary.lastTransactions}
-        />
-
-        <div className="grid gap-4 md:grid-cols-2">
-          <OutcomeByCategoryCard
-            categoriesSummary={summary.outcomeCategoriesSummary}
-          />
-
-          <IncomeByCategoryCard
-            categoriesSummary={summary.incomeCategoriesSummary}
-          />
-        </div>
-      </div>
+      <Suspense fallback={<DashboardSkeleton />}>
+        <DashboardSummary />
+      </Suspense>
     </main>
   )
 }
