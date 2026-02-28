@@ -1,6 +1,4 @@
 import type { Metadata } from 'next'
-import { Suspense } from 'react'
-import { DashboardSkeleton } from './_components/dashboard-skeleton'
 import { DashboardSummary } from './_components/dashboard-summary'
 
 export const metadata: Metadata = {
@@ -19,9 +17,7 @@ export default function HomePage() {
         </p>
       </div>
 
-      <Suspense fallback={<DashboardSkeleton />}>
-        <DashboardSummary />
-      </Suspense>
+      <DashboardSummary />
     </main>
   )
 }

@@ -1,11 +1,12 @@
+import { auth } from '@clerk/nextjs/server'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { getFinanceSummary } from '@/features/transactions/actions/get-finance-summary'
 import { formatCurrency } from '@/utils/format-currency'
 
-interface OutcomesCardProps {
-  outcome: number
-}
+export async function OutcomesCard() {
+  const { userId } = await auth()
+  const { outcome } = await getFinanceSummary(userId as string)
 
-export function OutcomesCard({ outcome }: OutcomesCardProps) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

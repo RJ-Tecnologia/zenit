@@ -1,3 +1,4 @@
+import { auth } from '@clerk/nextjs/server'
 import {
   Card,
   CardContent,
@@ -5,16 +6,14 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import type { CategorySummary } from '@/features/transactions/types/finance-summary'
+import { getFinanceSummary } from '@/features/transactions/actions/get-finance-summary'
 import { formatCurrency } from '@/utils/format-currency'
 
-interface IncomeByCategoryCardProps {
-  categoriesSummary: CategorySummary[]
-}
+export async function IncomeByCategoryCard() {
+  const { userId } = await auth()
+  const { incomeCategoriesSummary: categoriesSummary } =
+    await getFinanceSummary(userId as string)
 
-export function IncomeByCategoryCard({
-  categoriesSummary
-}: IncomeByCategoryCardProps) {
   return (
     <Card>
       <CardHeader>

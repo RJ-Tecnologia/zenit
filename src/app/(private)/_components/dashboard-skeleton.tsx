@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 
-function StatCardSkeleton() {
+export function StatCardSkeleton() {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -16,7 +16,7 @@ function StatCardSkeleton() {
   )
 }
 
-function RecentTransactionsCardSkeleton() {
+export function RecentTransactionsCardSkeleton() {
   return (
     <Card>
       <CardHeader>
@@ -40,7 +40,7 @@ function RecentTransactionsCardSkeleton() {
   )
 }
 
-function CategoryCardSkeleton() {
+export function CategoryCardSkeleton() {
   return (
     <Card>
       <CardHeader>

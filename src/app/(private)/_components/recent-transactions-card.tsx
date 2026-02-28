@@ -1,3 +1,4 @@
+import { auth } from '@clerk/nextjs/server'
 import {
   Card,
   CardContent,
@@ -5,19 +6,15 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import type { TransactionSummary } from '@/features/transactions/types/finance-summary'
+import { getFinanceSummary } from '@/features/transactions/actions/get-finance-summary'
 import { formatCurrency } from '@/utils/format-currency'
 import { formatDateTime } from '@/utils/format-datetime'
 
-interface RecentTransactionsCardProps {
-  transactionsCount: number
-  transactions: TransactionSummary[]
-}
+export async function RecentTransactionsCard() {
+  const { userId } = await auth()
+  const { transactionsCount, lastTransactions: transactions } =
+    await getFinanceSummary(userId as string)
 
-export function RecentTransactionsCard({
-  transactionsCount,
-  transactions
-}: RecentTransactionsCardProps) {
   return (
     <Card>
       <CardHeader>
