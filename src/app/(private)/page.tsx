@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/card'
 import { getFinanceSummary } from '@/features/transactions/actions/get-finance-summary'
 import { formatCurrency } from '@/utils/format-currency'
+import { formatDateTime } from '@/utils/format-datetime'
 
 export const metadata: Metadata = {
   title: 'Dashboard - Zenit Finance'
@@ -144,8 +145,8 @@ export default async function HomePage() {
       </div>
 
       {/* Recent Activity */}
-      <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
+      <div className="mt-8 flex flex-col gap-4">
+        <Card>
           <CardHeader>
             <CardTitle>Transações Recentes</CardTitle>
             <CardDescription>
@@ -161,7 +162,7 @@ export default async function HomePage() {
                       {transaction.title}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Categoria: {transaction.category}
+                      {formatDateTime(transaction.date)}
                     </p>
                   </div>
                   <div
@@ -176,39 +177,63 @@ export default async function HomePage() {
           </CardContent>
         </Card>
 
-        <Card className="col-span-3">
-          <CardHeader>
-            <CardTitle>Resumo por Categoria</CardTitle>
-            <CardDescription>Principais categorias do mês</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-8">
-              <div className="flex items-center">
-                <div className="ml-4 space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    Alimentação
-                  </p>
-                  <p className="text-sm text-muted-foreground">35% do total</p>
-                </div>
-                <div className="ml-auto font-medium">R$ 1.505,00</div>
+        <div className="grid gap-4 md:grid-cols-2">
+          <Card>
+            <CardHeader>
+              <CardTitle>Principais despesas por categoria</CardTitle>
+              <CardDescription>
+                Top 3 categorias com mais gastos
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-8">
+                {summary.outcomeCategoriesSummary.map((category) => (
+                  <div key={category.name} className="flex items-center">
+                    <div className="ml-4 space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {category.name}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {category.percentage.toFixed(1)}% do total
+                      </p>
+                    </div>
+                    <div className="ml-auto font-medium text-red-600">
+                      {formatCurrency(category.amount)}
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="flex items-center">
-                <div className="ml-4 space-y-1">
-                  <p className="text-sm font-medium leading-none">Transporte</p>
-                  <p className="text-sm text-muted-foreground">20% do total</p>
-                </div>
-                <div className="ml-auto font-medium">R$ 860,00</div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Principais receitas por categoria</CardTitle>
+              <CardDescription>
+                Top 3 categorias com mais rendimentos
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-8">
+                {summary.incomeCategoriesSummary.map((category) => (
+                  <div key={category.name} className="flex items-center">
+                    <div className="ml-4 space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {category.name}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {category.percentage.toFixed(1)}% do total
+                      </p>
+                    </div>
+                    <div className="ml-auto font-medium text-green-600">
+                      {formatCurrency(category.amount)}
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="flex items-center">
-                <div className="ml-4 space-y-1">
-                  <p className="text-sm font-medium leading-none">Contas</p>
-                  <p className="text-sm text-muted-foreground">15% do total</p>
-                </div>
-                <div className="ml-auto font-medium">R$ 645,00</div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </main>
   )

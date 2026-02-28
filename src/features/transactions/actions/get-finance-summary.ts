@@ -1,38 +1,41 @@
 'use server'
 
-import type { TransactionType } from '@/generated/prisma/enums'
-import { getTransactions } from './get-transactions'
-
-interface FinanceSummary {
-  balance: number
-  income: number
-  outcome: number
-  transactionsCount: number
-  lastTransactions: {
-    id: string
-    title: string
-    amount: number
-    category: string
-    type: TransactionType
-  }[]
-}
+import { prisma } from '@/lib/prisma'
+import type { FinanceSummary } from '../types/finance-summary'
 
 export async function getFinanceSummary(
   clerkUserId: string
 ): Promise<FinanceSummary> {
-  const transactions = await getTransactions(clerkUserId)
+  const transactions = await prisma.transaction.findMany({
+    where: {
+      user: {
+        clerkUserId
+      }
+    },
+    orderBy: {
+      date: 'desc'
+    },
+    include: {
+      category: {
+        select: {
+          name: true
+        }
+      }
+    }
+  })
+
   const { income, outcome } = transactions.reduce(
     (acc, current) => {
       if (current.type === 'INCOME') {
         return {
-          income: acc.income + parseFloat(current.amount),
+          income: acc.income + current.amount.toNumber(),
           outcome: acc.outcome
         }
       }
 
       return {
         income: acc.income,
-        outcome: acc.outcome + parseFloat(current.amount)
+        outcome: acc.outcome + current.amount.toNumber()
       }
     },
     { income: 0, outcome: 0 }
@@ -42,17 +45,74 @@ export async function getFinanceSummary(
     return {
       id: transaction.id,
       title: transaction.title,
-      amount: parseFloat(transaction.amount),
+      amount: transaction.amount.toNumber(),
       category: transaction.category.name,
-      type: transaction.type
+      type: transaction.type,
+      date: transaction.date
     }
   })
+
+  const outcomeCategoriesSummary = Object.values(
+    transactions
+      .filter((transaction) => transaction.type === 'OUTCOME')
+      .reduce<Record<string, { name: string; amount: number }>>(
+        (acc, transaction) => {
+          const categoryName = transaction.category.name
+          const amount = transaction.amount.toNumber()
+
+          if (acc[categoryName]) {
+            acc[categoryName].amount += amount
+          } else {
+            acc[categoryName] = { name: categoryName, amount }
+          }
+
+          return acc
+        },
+        {}
+      )
+  )
+    .sort((a, b) => b.amount - a.amount)
+    .slice(0, 3)
+    .map((category) => ({
+      name: category.name,
+      amount: category.amount,
+      percentage: outcome > 0 ? (category.amount / outcome) * 100 : 0
+    }))
+
+  const incomeCategoriesSummary = Object.values(
+    transactions
+      .filter((transaction) => transaction.type === 'INCOME')
+      .reduce<Record<string, { name: string; amount: number }>>(
+        (acc, transaction) => {
+          const categoryName = transaction.category.name
+          const amount = transaction.amount.toNumber()
+
+          if (acc[categoryName]) {
+            acc[categoryName].amount += amount
+          } else {
+            acc[categoryName] = { name: categoryName, amount }
+          }
+
+          return acc
+        },
+        {}
+      )
+  )
+    .sort((a, b) => b.amount - a.amount)
+    .slice(0, 3)
+    .map((category) => ({
+      name: category.name,
+      amount: category.amount,
+      percentage: income > 0 ? (category.amount / income) * 100 : 0
+    }))
 
   return {
     balance: income - outcome,
     income,
     outcome,
     transactionsCount: transactions.length,
-    lastTransactions
+    lastTransactions,
+    outcomeCategoriesSummary,
+    incomeCategoriesSummary
   }
 }
