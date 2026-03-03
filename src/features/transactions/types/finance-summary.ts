@@ -23,4 +23,8 @@ export interface FinanceSummary {
   lastTransactions: TransactionSummary[]
   outcomeCategoriesSummary: CategorySummary[]
   incomeCategoriesSummary: CategorySummary[]
+  balanceChangePercentage: number | null
+  incomeChangePercentage: number | null
+  outcomeChangePercentage: number | null
+  transactionsCountChangePercentage: number | null
 }

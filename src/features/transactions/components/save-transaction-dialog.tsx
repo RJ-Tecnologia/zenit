@@ -40,7 +40,10 @@ export function SaveTransactionDialog({
     useTransactionForm({
       categories,
       currentTransaction,
-      onSuccess: () => setOpen(false)
+      onSuccess: () => {
+        setOpen(false)
+        form.reset()
+      }
     })
 
   return (
@@ -75,7 +78,10 @@ export function SaveTransactionDialog({
                 type="button"
                 variant="outline"
                 className="flex-1"
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                  setOpen(false)
+                  form.reset()
+                }}
                 disabled={isPending}
               >
                 Cancelar

@@ -18,7 +18,7 @@ export async function IncomeByCategoryCard() {
     <Card>
       <CardHeader>
         <CardTitle>Principais receitas por categoria</CardTitle>
-        <CardDescription>Top 3 categorias com mais rendimentos</CardDescription>
+        <CardDescription>Top categorias com mais rendimentos</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-8">

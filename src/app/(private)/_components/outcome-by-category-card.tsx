@@ -18,7 +18,7 @@ export async function OutcomeByCategoryCard() {
     <Card>
       <CardHeader>
         <CardTitle>Principais despesas por categoria</CardTitle>
-        <CardDescription>Top 3 categorias com mais gastos</CardDescription>
+        <CardDescription>Top categorias com mais gastos</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-8">

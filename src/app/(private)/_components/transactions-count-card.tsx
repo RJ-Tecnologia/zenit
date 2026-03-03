@@ -4,7 +4,8 @@ import { getFinanceSummary } from '@/features/transactions/actions/get-finance-s
 
 export async function TransactionsCountCard() {
   const { userId } = await auth()
-  const { transactionsCount } = await getFinanceSummary(userId as string)
+  const { transactionsCount, transactionsCountChangePercentage } =
+    await getFinanceSummary(userId as string)
 
   return (
     <Card>
@@ -26,9 +27,13 @@ export async function TransactionsCountCard() {
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold">{transactionsCount}</div>
-        <p className="text-xs text-muted-foreground">
-          +201 desde o mês passado
-        </p>
+        {transactionsCountChangePercentage !== null && (
+          <p className="text-xs text-muted-foreground">
+            {transactionsCountChangePercentage >= 0 ? '+' : ''}
+            {transactionsCountChangePercentage.toFixed(1)}% em relação ao mês
+            passado
+          </p>
+        )}
       </CardContent>
     </Card>
   )

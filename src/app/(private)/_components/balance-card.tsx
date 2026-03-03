@@ -5,7 +5,9 @@ import { formatCurrency } from '@/utils/format-currency'
 
 export async function BalanceCard() {
   const { userId } = await auth()
-  const { balance } = await getFinanceSummary(userId as string)
+  const { balance, balanceChangePercentage } = await getFinanceSummary(
+    userId as string
+  )
 
   return (
     <Card>
@@ -27,9 +29,12 @@ export async function BalanceCard() {
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold">{formatCurrency(balance)}</div>
-        <p className="text-xs text-muted-foreground">
-          +20.1% em relação ao mês passado
-        </p>
+        {balanceChangePercentage !== null && (
+          <p className="text-xs text-muted-foreground">
+            {balanceChangePercentage >= 0 ? '+' : ''}
+            {balanceChangePercentage.toFixed(1)}% em relação ao mês passado
+          </p>
+        )}
       </CardContent>
     </Card>
   )

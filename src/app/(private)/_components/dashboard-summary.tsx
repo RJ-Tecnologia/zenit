@@ -31,10 +31,6 @@ export function DashboardSummary() {
       </div>
 
       <div className="mt-8 flex flex-col gap-4">
-        <Suspense fallback={<RecentTransactionsCardSkeleton />}>
-          <RecentTransactionsCard />
-        </Suspense>
-
         <div className="grid gap-4 md:grid-cols-2">
           <Suspense fallback={<CategoryCardSkeleton />}>
             <OutcomeByCategoryCard />
@@ -44,6 +40,10 @@ export function DashboardSummary() {
             <IncomeByCategoryCard />
           </Suspense>
         </div>
+
+        <Suspense fallback={<RecentTransactionsCardSkeleton />}>
+          <RecentTransactionsCard />
+        </Suspense>
       </div>
     </>
   )
