@@ -9,10 +9,18 @@ import {
 import { getFinanceSummary } from '@/features/transactions/actions/get-finance-summary'
 import { formatCurrency } from '@/utils/format-currency'
 
-export async function OutcomeByCategoryCard() {
+interface OutcomeByCategoryCardProps {
+  startDate: Date
+  endDate: Date
+}
+
+export async function OutcomeByCategoryCard({
+  startDate,
+  endDate
+}: OutcomeByCategoryCardProps) {
   const { userId } = await auth()
   const { outcomeCategoriesSummary: categoriesSummary } =
-    await getFinanceSummary(userId as string)
+    await getFinanceSummary(userId as string, startDate, endDate)
 
   return (
     <Card>

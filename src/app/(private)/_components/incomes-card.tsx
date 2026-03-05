@@ -3,10 +3,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getFinanceSummary } from '@/features/transactions/actions/get-finance-summary'
 import { formatCurrency } from '@/utils/format-currency'
 
-export async function IncomesCard() {
+interface IncomesCardProps {
+  startDate: Date
+  endDate: Date
+}
+
+export async function IncomesCard({ startDate, endDate }: IncomesCardProps) {
   const { userId } = await auth()
   const { income, incomeChangePercentage } = await getFinanceSummary(
-    userId as string
+    userId as string,
+    startDate,
+    endDate
   )
 
   return (

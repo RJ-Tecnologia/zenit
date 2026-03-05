@@ -10,17 +10,25 @@ import { getFinanceSummary } from '@/features/transactions/actions/get-finance-s
 import { formatCurrency } from '@/utils/format-currency'
 import { formatDateTime } from '@/utils/format-datetime'
 
-export async function RecentTransactionsCard() {
+interface RecentTransactionsCardProps {
+  startDate: Date
+  endDate: Date
+}
+
+export async function RecentTransactionsCard({
+  startDate,
+  endDate
+}: RecentTransactionsCardProps) {
   const { userId } = await auth()
   const { transactionsCount, lastTransactions: transactions } =
-    await getFinanceSummary(userId as string)
+    await getFinanceSummary(userId as string, startDate, endDate)
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>Transações Recentes</CardTitle>
         <CardDescription>
-          Você realizou {transactionsCount} transações este mês
+          Você realizou {transactionsCount} transações neste período
         </CardDescription>
       </CardHeader>
       <CardContent>

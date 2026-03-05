@@ -3,10 +3,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getFinanceSummary } from '@/features/transactions/actions/get-finance-summary'
 import { formatCurrency } from '@/utils/format-currency'
 
-export async function BalanceCard() {
+interface BalanceCardProps {
+  startDate: Date
+  endDate: Date
+}
+
+export async function BalanceCard({ startDate, endDate }: BalanceCardProps) {
   const { userId } = await auth()
   const { balance, balanceChangePercentage } = await getFinanceSummary(
-    userId as string
+    userId as string,
+    startDate,
+    endDate
   )
 
   return (

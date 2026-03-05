@@ -2,10 +2,18 @@ import { auth } from '@clerk/nextjs/server'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getFinanceSummary } from '@/features/transactions/actions/get-finance-summary'
 
-export async function TransactionsCountCard() {
+interface TransactionsCountCardProps {
+  startDate: Date
+  endDate: Date
+}
+
+export async function TransactionsCountCard({
+  startDate,
+  endDate
+}: TransactionsCountCardProps) {
   const { userId } = await auth()
   const { transactionsCount, transactionsCountChangePercentage } =
-    await getFinanceSummary(userId as string)
+    await getFinanceSummary(userId as string, startDate, endDate)
 
   return (
     <Card>

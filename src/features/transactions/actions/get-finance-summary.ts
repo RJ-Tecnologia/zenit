@@ -12,12 +12,12 @@ function calcPercentageChange(
 }
 
 export const getFinanceSummary = cache(
-  async (clerkUserId: string): Promise<FinanceSummary> => {
-    const now = new Date()
-    const startDate = startOfMonth(now)
-    const endDate = endOfMonth(now)
-
-    const previousMonth = subMonths(now, 1)
+  async (
+    clerkUserId: string,
+    startDate: Date,
+    endDate: Date
+  ): Promise<FinanceSummary> => {
+    const previousMonth = subMonths(startDate, 1)
     const previousStartDate = startOfMonth(previousMonth)
     const previousEndDate = endOfMonth(previousMonth)
 
