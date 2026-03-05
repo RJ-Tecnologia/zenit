@@ -88,7 +88,7 @@
 - Isolar dados por usuário
 
 ### Tarefas
-- [X] Configurar autenticação (Supabase Auth ou Clerk)
+- [X] Configurar autenticação (Clerk)
 - [X] Implementar cadastro de usuário
 - [X] Implementar login
 - [X] Implementar logout
@@ -112,7 +112,7 @@
 
 ---
 
-## 🖥️ FASE 6 — Frontend (Funcionalidades Principais)  
+## 🖥️ FASE 6 — Frontend (Funcionalidades Principais)
 **Duração:** 7 a 10 dias
 
 ### Objetivos
@@ -124,58 +124,103 @@
   - [X] Saldo do mês
   - [X] Total de entradas
   - [X] Total de saídas
+- [X] Criar tela de listagem de movimentações
+- [X] Criar formulário de criação de movimentação
+- [X] Criar formulário de edição de movimentação
+- [X] Implementar filtro por mês
 - [ ] Implementar gráficos:
   - [ ] Entradas vs saídas
   - [ ] Gastos por categoria
-- [ ] Criar tela de listagem de movimentações
-- [ ] Criar formulário de criação de movimentação
-- [ ] Criar formulário de edição de movimentação
-- [ ] Implementar filtro por mês
-- [ ] Tratar estados de loading e erro
 
 ---
 
-## 🎮 FASE 7 — Gamificação Básica  
-**Duração:** 2 a 3 dias
-
-### Objetivos
-- Incentivar uso contínuo
-- Criar sensação de progresso
-
-### Tarefas
-- [ ] Implementar contador de dias ativos
-- [ ] Criar mensagem de “mês organizado”
-- [ ] Implementar indicador de progresso mensal
-- [ ] Adicionar feedback visual positivo
-
----
-
-## 🧪 FASE 8 — Testes, Ajustes e Refinamento  
-**Duração:** 4 a 5 dias
-
-### Objetivos
-- Garantir estabilidade e boa UX
-
-### Tarefas
-- [ ] Realizar testes manuais completos
-- [ ] Corrigir bugs encontrados
-- [ ] Ajustar UI/UX com base nos testes
-- [ ] Melhorar performance básica
-- [ ] Revisar segurança básica
-- [ ] Revisar textos e mensagens da aplicação
-
----
-
-## 🚀 FASE 9 — Preparação para Lançamento  
+## 🚀 FASE 7 — Preparação para o Lançamento  
 **Duração:** 2 a 3 dias
 
 ### Objetivos
 - Colocar o MVP no ar com confiança
 
 ### Tarefas
-- [ ] Revisar variáveis de ambiente em produção
-- [ ] Configurar domínio (se aplicável)
+- [X] Configurar domínio (se aplicável)
+- [ ] Definir os planos que a aplicação terá
 - [ ] Criar landing page simples
+
+---
+
+## 🛠️ FASE 8 — Revisão da stack e ferramentas utilizadas
+**Duração:** Indeterminado
+
+### Objetivos
+- Analisar a stack e ferramentas utilizadas e ver se faz sentido o uso ao longo prazo
+
+### Tarefas
+- [ ] Analisar o uso do Clerk (vai ter um custo ao longo prazo e possui um vendor lock-in grande)
+  - [ ] Verificar se vale mais a pena utilizar outra forma de autenticação ou implementar do zero.
+- [ ] Analisar o uso do Next.js (não tem grande impacto na aplicação, visto que é necessário fazer login para usá-la)
+  - [ ] Verificar se vale a pena trocar para a stack React + Node.js, o que pode melhorar a escalabilidade do back-end
+  - [ ] Se optarmos por trocar a stack, apenas a Landing Page seria feita com o Next.js (ou Astro) pois precisaria de um bom SEO
+- [ ] Fazer as mudanças que forem necessárias
+
+---
+
+## 💸 FASE 9 — Implementar meios de pagamentos
+**Duração:** 3 a 6 dias
+
+### Objetivos
+- Integrar com algum gateway de pagamentos
+
+### Tarefas
+- [ ] Integrar com o Stripe (ou outro gateway de pagamentos)
 - [ ] Configurar período de trial (7 ou 14 dias)
-- [ ] Testar fluxo completo como usuário final
+
+---
+
+## 🎨 FASE 10 — Melhorar UI/UX
+**Duração:** Indeterminado
+
+### Objetivos
+- Realizar mudanças na interface do projeto e na usabilidade
+
+### Tarefas
+- [ ] Alterar a paleta de cores para ter uma identidade visual própria
+  - [ ] Buscar inspirações no Dribbble, Figma, Pinterest ou outro local
+- [ ] Alterar a interface da aplicação deixando-a com um visual mais moderno utilizando a nova paleta de cores
+- [ ] Testar a usabilidade do projeto e melhorar conforme for encontrando pontos de melhoria
+
+---
+
+## 🐞 FASE 11 — Testes automatizados
+**Duração:** 2 a 5 dias
+
+### Objetivos
+- Criar testes automatizados para garantir o funcionamento adequado da aplicação
+
+### Tarefas
+- [ ] Implementar testes unitários com o Vitest (ou outra ferramenta)
+- [ ] Implementar testes E2E com o Playwright (ou Cypress)
+
+---
+
+## 📉 FASE 12 — Divulgação, marketing orgânico e campanhas
+**Duração:** Indeterminado
+
+### Objetivos
+- Divulgar a aplicação e, possivelmente, conseguir os primeiros clientes
+
+### Tarefas
 - [ ] Definir canal de feedback inicial
+- [ ] Criar redes sociais para o produto
+- [ ] Criar campanhas no Meta Ads ou Google Ads (opcional)
+
+---
+
+## 💭 FASE 13 — Planejar próximos passos
+**Duração:** Indeterminado
+
+### Objetivos
+- Divulgar a aplicação e, possivelmente, conseguir os primeiros clientes
+
+### Tarefas
+- [ ] Analisar os feedbacks recebidos (caso tenha)
+- [ ] Planejar os próximos passos da aplicação de acordo com os feedbacks (ou a falta deles)
+- [ ] Atualizar o Roadmap
