@@ -65,8 +65,8 @@
 - Implementar a navegação entre páginas
 
 ### Tarefas
-- [ ] Configurar o Tanstack Router
-- [ ] Criar um roteamento básico
+- [X] Configurar o Tanstack Router
+- [X] Criar um roteamento básico
 
 ---
 
@@ -90,13 +90,13 @@
 - Entregar valor real ao usuário
 
 ### Tarefas
-- [X] Implementar Dashboard
-  - [X] Saldo do mês
-  - [X] Total de entradas
-  - [X] Total de saídas
-- [X] Criar tela de listagem de movimentações
-- [X] Criar formulário de criação de movimentação
-- [X] Criar formulário de edição de movimentação
+- [ ] Implementar Dashboard
+  - [ ] Saldo do mês
+  - [ ] Total de entradas
+  - [ ] Total de saídas
+- [ ] Criar tela de listagem de movimentações
+- [ ] Criar formulário de criação de movimentação
+- [ ] Criar formulário de edição de movimentação
 
 ---
 
