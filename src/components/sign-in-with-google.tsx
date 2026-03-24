@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { env } from '@/env'
 import { authClient } from '@/lib/auth-client'
 
-export const SignInWithGoogle = () => {
+export function SignInWithGoogle() {
   const handleGoogleLogin = async () => {
     const { error } = await authClient.signIn.social({
       provider: 'google',
