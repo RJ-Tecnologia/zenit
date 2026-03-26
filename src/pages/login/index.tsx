@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { SignInWithGoogle } from '@/components/sign-in-with-google'
+import { SignInWithGoogle } from '@/components/core/sign-in-with-google'
 
 export const Route = createFileRoute('/login/')({
   head: () => ({
