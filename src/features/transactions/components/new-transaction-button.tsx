@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { getCategoriesRequest } from '@/http/get-categories'
 import { SaveTransactionDialog } from '../components/save-transaction-dialog'
 
-export async function NewTransactionButton() {
+export function NewTransactionButton() {
   const { data } = useQuery({
     queryKey: ['get-categories'],
     queryFn: getCategoriesRequest

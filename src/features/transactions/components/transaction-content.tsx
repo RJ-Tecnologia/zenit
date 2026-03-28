@@ -3,7 +3,7 @@ import { getCategoriesRequest } from '@/http/get-categories'
 import { getTransactionsRequest } from '@/http/get-transactions'
 import { TransactionsList } from './transaction-list'
 
-export async function TransactionsContent() {
+export function TransactionsContent() {
   const { data: transactionsData } = useQuery({
     queryKey: ['get-transactions'],
     queryFn: getTransactionsRequest
