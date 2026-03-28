@@ -4,6 +4,7 @@ import { api } from '@/lib/api'
 interface CreateTransactionRequest {
   title: string
   description?: string
+  amount: number
   type: TransactionType
   date: string
   categoryId: string

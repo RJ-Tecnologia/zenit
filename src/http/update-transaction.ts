@@ -4,6 +4,7 @@ import { api } from '@/lib/api'
 interface UpdateTransactionRequest {
   transactionId: string
   title: string
+  amount: number
   description?: string
   type: TransactionType
   date: string

@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   ArrowDownCircleIcon,
   ArrowUpCircleIcon,
@@ -30,7 +30,7 @@ import {
 import type { Category } from '@/features/categories/types'
 import { deleteTransactionRequest } from '@/http/delete-transaction'
 import { formatCurrency } from '@/utils/format-currency'
-import { formatDateTime } from '@/utils/format-datetime'
+import { formatDate } from '@/utils/format-date'
 import type { Transaction } from '../types'
 import { SaveTransactionDialog } from './save-transaction-dialog'
 
@@ -51,6 +51,8 @@ export function TransactionsList({
     mutationFn: deleteTransactionRequest
   })
 
+  const queryClient = useQueryClient()
+
   async function handleDelete() {
     if (!transactionToDelete) return
 
@@ -58,6 +60,14 @@ export function TransactionsList({
     setTransactionToDelete(null)
 
     toast.success('Movimentação deletada!')
+
+    queryClient.invalidateQueries({
+      queryKey: ['get-transactions']
+    })
+  }
+
+  function getCategoryNameById(categoryId: string) {
+    return categories.find(({ id }) => id === categoryId)?.name
   }
 
   return (
@@ -95,10 +105,10 @@ export function TransactionsList({
                     {transaction.description ?? '-'}
                   </TableCell>
                   <TableCell>
-                    <Badge>{transaction.categoryId}</Badge>
+                    <Badge>{`${getCategoryNameById(transaction.categoryId)}`}</Badge>
                   </TableCell>
                   <TableCell className="hidden sm:table-cell text-muted-foreground">
-                    {formatDateTime(new Date(transaction.date))}
+                    {formatDate(new Date(transaction.date))}
                   </TableCell>
                   <TableCell
                     className={`text-right font-semibold ${

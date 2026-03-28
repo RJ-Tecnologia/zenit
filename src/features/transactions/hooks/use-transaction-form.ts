@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -34,6 +34,8 @@ export function useTransactionForm({
     useMutation({
       mutationFn: updateTransactionRequest
     })
+
+  const queryClient = useQueryClient()
 
   const form = useForm<NewTransactionformSchema>({
     resolver: zodResolver(newTransactionformSchema),
@@ -75,6 +77,7 @@ export function useTransactionForm({
         await updateTransaction({
           transactionId: currentTransaction.id,
           title: data.title,
+          amount: data.amount,
           description: data.description,
           categoryId: data.categoryId,
           type: data.type,
@@ -83,6 +86,7 @@ export function useTransactionForm({
       } else {
         await createTransaction({
           title: data.title,
+          amount: data.amount,
           description: data.description,
           categoryId: data.categoryId,
           type: data.type,
@@ -91,6 +95,10 @@ export function useTransactionForm({
       }
 
       toast.success(`Movimentação ${isUpdate ? 'Atualizada' : 'Cadastrada'}!`)
+
+      queryClient.invalidateQueries({
+        queryKey: ['get-transactions']
+      })
 
       onSuccess?.()
     } catch (error) {
