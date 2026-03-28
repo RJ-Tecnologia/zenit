@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { format } from 'date-fns'
 import {
   ArrowDownCircleIcon,
   ArrowUpCircleIcon,
@@ -30,7 +31,6 @@ import {
 import type { Category } from '@/features/categories/types'
 import { deleteTransactionRequest } from '@/http/delete-transaction'
 import { formatCurrency } from '@/utils/format-currency'
-import { formatDate } from '@/utils/format-date'
 import type { Transaction } from '../types'
 import { SaveTransactionDialog } from './save-transaction-dialog'
 
@@ -108,7 +108,7 @@ export function TransactionsList({
                     <Badge>{`${getCategoryNameById(transaction.categoryId)}`}</Badge>
                   </TableCell>
                   <TableCell className="hidden sm:table-cell text-muted-foreground">
-                    {formatDate(new Date(transaction.date))}
+                    {format(new Date(transaction.date), 'dd/MM/yyyy')}
                   </TableCell>
                   <TableCell
                     className={`text-right font-semibold ${
