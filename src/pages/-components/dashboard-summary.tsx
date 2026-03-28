@@ -1,5 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
-import { getTransactionsSummaryRequest } from '@/http/get-transactions-summary'
+import type { TransactionsSummary } from '@/features/transactions/types'
 import { BalanceCard } from './balance-card'
 import {
   CategoryCardSkeleton,
@@ -14,28 +13,33 @@ import { RecentTransactionsCard } from './recent-transactions-card'
 import { TransactionsCountCard } from './transactions-count-card'
 
 interface DashboardSummaryProps {
-  startDate: Date
-  endDate: Date
+  summary?: TransactionsSummary
 }
 
-export function DashboardSummary({
-  startDate,
-  endDate
-}: DashboardSummaryProps) {
-  const { data } = useQuery({
-    queryKey: ['get-transactions-summary'],
-    queryFn: () => getTransactionsSummaryRequest({ startDate, endDate })
-  })
-
+export function DashboardSummary({ summary }: DashboardSummaryProps) {
   return (
     <>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {data ? (
+        {summary ? (
           <>
-            <BalanceCard {...data} />
-            <IncomesCard {...data} />
-            <OutcomesCard {...data} />
-            <TransactionsCountCard {...data} />
+            <BalanceCard
+              balance={summary.balance}
+              balanceChangePercentage={summary.balanceChangePercentage}
+            />
+            <IncomesCard
+              income={summary.income}
+              incomeChangePercentage={summary.incomeChangePercentage}
+            />
+            <OutcomesCard
+              outcome={summary.outcome}
+              outcomeChangePercentage={summary.outcomeChangePercentage}
+            />
+            <TransactionsCountCard
+              transactionsCount={summary.transactionsCount}
+              transactionsCountChangePercentage={
+                summary.transactionsCountChangePercentage
+              }
+            />
           </>
         ) : (
           <>
@@ -49,13 +53,13 @@ export function DashboardSummary({
 
       <div className="mt-8 flex flex-col gap-4">
         <div className="grid gap-4 md:grid-cols-2">
-          {data ? (
+          {summary ? (
             <>
               <OutcomeByCategoryCard
-                categoriesSummary={data.outcomeCategoriesSummary}
+                categoriesSummary={summary.outcomeCategoriesSummary}
               />
               <IncomeByCategoryCard
-                categoriesSummary={data.incomeCategoriesSummary}
+                categoriesSummary={summary.incomeCategoriesSummary}
               />
             </>
           ) : (
@@ -66,8 +70,8 @@ export function DashboardSummary({
           )}
         </div>
 
-        {data ? (
-          <RecentTransactionsCard transactions={data.lastTransactions} />
+        {summary ? (
+          <RecentTransactionsCard transactions={summary.lastTransactions} />
         ) : (
           <RecentTransactionsCardSkeleton />
         )}

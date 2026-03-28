@@ -1,6 +1,10 @@
+import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { endOfMonth, startOfMonth } from 'date-fns'
+import z from 'zod'
+import { getTransactionsSummaryRequest } from '@/http/get-transactions-summary'
 import { DashboardSummary } from './-components/dashboard-summary'
+import { MonthNavigator } from './-components/month-navigator'
 
 export const Route = createFileRoute('/')({
   component: HomePage,
@@ -10,16 +14,27 @@ export const Route = createFileRoute('/')({
         title: 'Dashboard - Zenit Finance'
       }
     ]
+  }),
+  validateSearch: z.object({
+    month: z.coerce.number().optional(),
+    year: z.coerce.number().optional()
   })
 })
 
 function HomePage() {
+  const { month, year } = Route.useSearch()
+
   const now = new Date()
-  const selectedMonth = now.getMonth() + 1
-  const selectedYear = now.getFullYear()
+  const selectedMonth = month ?? now.getMonth() + 1
+  const selectedYear = year ?? now.getFullYear()
 
   const startDate = startOfMonth(new Date(selectedYear, selectedMonth - 1, 1))
   const endDate = endOfMonth(new Date(selectedYear, selectedMonth - 1, 1))
+
+  const { data: transactionsSummary } = useQuery({
+    queryKey: ['get-transactions-summary', { startDate, endDate }],
+    queryFn: () => getTransactionsSummaryRequest({ startDate, endDate })
+  })
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -32,9 +47,11 @@ function HomePage() {
             Aqui está um resumo das suas finanças
           </p>
         </div>
+
+        <MonthNavigator month={selectedMonth} year={selectedYear} />
       </div>
 
-      <DashboardSummary startDate={startDate} endDate={endDate} />
+      <DashboardSummary summary={transactionsSummary} />
     </main>
   )
 }
