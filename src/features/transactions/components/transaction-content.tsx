@@ -4,12 +4,14 @@ import { getTransactionsRequest } from '@/http/get-transactions'
 import { TransactionsList } from './transaction-list'
 
 export function TransactionsContent() {
-  const { data: transactionsData } = useQuery({
-    queryKey: ['get-transactions'],
-    queryFn: getTransactionsRequest
-  })
+  const { data: transactionsData, isLoading: isLoadingTransactions } = useQuery(
+    {
+      queryKey: ['get-transactions'],
+      queryFn: getTransactionsRequest
+    }
+  )
 
-  const { data: categoriesData } = useQuery({
+  const { data: categoriesData, isLoading: isLoadingCategories } = useQuery({
     queryKey: ['get-categories'],
     queryFn: getCategoriesRequest
   })
@@ -18,6 +20,7 @@ export function TransactionsContent() {
     <TransactionsList
       transactions={transactionsData?.transactions ?? []}
       categories={categoriesData?.categories ?? []}
+      isLoading={isLoadingTransactions || isLoadingCategories}
     />
   )
 }
