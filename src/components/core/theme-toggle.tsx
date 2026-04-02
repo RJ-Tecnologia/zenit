@@ -1,34 +1,26 @@
 import { Moon, Sun } from 'lucide-react'
+import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 
-const LOCAL_STORAGE_KEY = '@zenit-finance:theme'
-
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem(LOCAL_STORAGE_KEY) as
-        | 'light'
-        | 'dark'
-        | null
-      return savedTheme || 'dark'
-    }
-    return 'dark'
-  })
+  const { setTheme, theme } = useTheme()
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    const root = window.document.documentElement
-    if (theme === 'dark') {
-      root.classList.add('dark')
-    } else {
-      root.classList.remove('dark')
-    }
+    setMounted(true)
+  }, [])
 
-    localStorage.setItem(LOCAL_STORAGE_KEY, theme)
-  }, [theme])
+  if (!mounted) {
+    return (
+      <Button variant="ghost" size="icon" disabled>
+        <Sun className="size-5" />
+      </Button>
+    )
+  }
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
+    setTheme(theme === 'light' ? 'dark' : 'light')
   }
 
   return (
