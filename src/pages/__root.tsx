@@ -1,5 +1,6 @@
 import {
   createRootRoute,
+  HeadContent,
   Outlet,
   redirect,
   useLocation
@@ -10,6 +11,13 @@ import { ThemeToggle } from '@/components/core/theme-toggle'
 import { authClient } from '@/lib/auth-client'
 
 export const Route = createRootRoute({
+  head: () => ({
+    meta: [
+      {
+        title: 'Zenit Finance'
+      }
+    ]
+  }),
   beforeLoad: async ({ location }) => {
     const { data: session } = await authClient.getSession()
 
@@ -39,6 +47,7 @@ function RootComponent() {
 
   return (
     <div className="min-h-screen bg-background">
+      <HeadContent />
       {!isLoginPage && (
         <header className="border-b">
           <div className="container mx-auto flex items-center justify-between px-4 py-4">
