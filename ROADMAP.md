@@ -77,9 +77,9 @@
 - Implementar a autenticação e a conexão com a API REST
 
 ### Tarefas
-- [ ] Implementar página de login
-- [ ] Implementar a autenticação utilizando o Better Auth
-- [ ] Configurar a conexão com a API utilizando Axios e Tanstack Query
+- [X] Implementar página de login
+- [X] Implementar a autenticação utilizando o Better Auth
+- [X] Configurar a conexão com a API utilizando Axios e Tanstack Query
 
 ---
 
@@ -90,13 +90,13 @@
 - Entregar valor real ao usuário
 
 ### Tarefas
-- [ ] Implementar Dashboard
-  - [ ] Saldo do mês
-  - [ ] Total de entradas
-  - [ ] Total de saídas
-- [ ] Criar tela de listagem de movimentações
-- [ ] Criar formulário de criação de movimentação
-- [ ] Criar formulário de edição de movimentação
+- [X] Implementar Dashboard
+  - [X] Saldo do mês
+  - [X] Total de entradas
+  - [X] Total de saídas
+- [X] Criar tela de listagem de movimentações
+- [X] Criar formulário de criação de movimentação
+- [X] Criar formulário de edição de movimentação
 
 ---
 
