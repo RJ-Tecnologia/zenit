@@ -1,6 +1,7 @@
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { CalendarIcon } from 'lucide-react'
+import { CalendarIcon, PlusIcon } from 'lucide-react'
+import { useState } from 'react'
 import { type Control, Controller } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -19,9 +20,11 @@ import {
   Select,
   SelectContent,
   SelectItem,
+  SelectSeparator,
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import { SaveCategoryDialog } from '@/features/categories/components/save-category-dialog'
 import type { Category } from '@/features/categories/types'
 import { cn } from '@/lib/utils'
 import type { NewTransactionformSchema } from '../schemas/new-transaction-schema'
@@ -121,6 +124,8 @@ interface CategoryFieldProps extends FormFieldProps {
 }
 
 export function CategoryField({ control, categories }: CategoryFieldProps) {
+  const [isNewCategoryDialogOpen, setIsNewCategoryDialogOpen] = useState(false)
+
   return (
     <Controller
       control={control}
@@ -129,7 +134,16 @@ export function CategoryField({ control, categories }: CategoryFieldProps) {
         <Field>
           <div className="space-y-2">
             <FieldLabel htmlFor="category">Categoria</FieldLabel>
-            <Select onValueChange={field.onChange} value={field.value}>
+            <Select
+              onValueChange={(value) => {
+                if (value === 'NEW_CATEGORY') {
+                  setIsNewCategoryDialogOpen(true)
+                  return
+                }
+                field.onChange(value)
+              }}
+              value={field.value}
+            >
               <SelectTrigger id="category">
                 <SelectValue placeholder="Selecione a categoria" />
               </SelectTrigger>
@@ -139,6 +153,13 @@ export function CategoryField({ control, categories }: CategoryFieldProps) {
                     {category.name}
                   </SelectItem>
                 ))}
+                <SelectSeparator />
+                <SelectItem value="NEW_CATEGORY">
+                  <div className="flex items-center gap-2 text-primary">
+                    <PlusIcon className="size-4" />
+                    <span>Nova Categoria</span>
+                  </div>
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -149,6 +170,14 @@ export function CategoryField({ control, categories }: CategoryFieldProps) {
               className="text-xs"
             />
           )}
+
+          <SaveCategoryDialog
+            open={isNewCategoryDialogOpen}
+            onOpenChange={setIsNewCategoryDialogOpen}
+            onSuccess={(newCategory) => {
+              field.onChange(newCategory.id)
+            }}
+          />
         </Field>
       )}
     />

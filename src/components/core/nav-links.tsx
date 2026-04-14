@@ -3,7 +3,8 @@ import { cn } from '@/lib/utils'
 
 const navLinks = [
   { href: '/', label: 'Dashboard' },
-  { href: '/transactions', label: 'Transações' }
+  { href: '/transactions', label: 'Transações' },
+  { href: '/categories', label: 'Categorias' }
 ]
 
 export function NavLinks() {
