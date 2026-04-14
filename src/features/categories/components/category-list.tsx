@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Edit2Icon, InboxIcon, Trash2Icon } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { DeleteConfirmationDialog } from '@/components/core/delete-confirmation-dialog'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -27,6 +28,7 @@ const SCOPE_LABELS: Record<Category['scope'], string> = {
 
 export function CategoryList() {
   const [editingCategory, setEditingCategory] = useState<Category | null>(null)
+  const [categoryToDelete, setCategoryToDelete] = useState<string | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const queryClient = useQueryClient()
 
@@ -51,10 +53,10 @@ export function CategoryList() {
     setIsDialogOpen(true)
   }
 
-  const handleDelete = async (categoryId: string) => {
-    if (confirm('Tem certeza que deseja excluir esta categoria?')) {
-      await deleteCategory({ categoryId })
-    }
+  const handleDelete = async () => {
+    if (!categoryToDelete) return
+    await deleteCategory({ categoryId: categoryToDelete })
+    setCategoryToDelete(null)
   }
 
   if (isLoading) {
@@ -125,7 +127,7 @@ export function CategoryList() {
                     variant="ghost"
                     size="icon"
                     className="text-destructive hover:text-destructive"
-                    onClick={() => handleDelete(category.id)}
+                    onClick={() => setCategoryToDelete(category.id)}
                     disabled={isDeleting}
                   >
                     <Trash2Icon className="size-4" />
@@ -145,6 +147,17 @@ export function CategoryList() {
           setIsDialogOpen(open)
           if (!open) setEditingCategory(null)
         }}
+      />
+
+      <DeleteConfirmationDialog
+        open={!!categoryToDelete}
+        onOpenChange={(open) => {
+          if (!open) setCategoryToDelete(null)
+        }}
+        onConfirm={handleDelete}
+        isLoading={isDeleting}
+        title="Excluir categoria"
+        description="Tem certeza que deseja excluir esta categoria? Essa ação não pode ser desfeita."
       />
     </div>
   )

@@ -8,16 +8,7 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle
-} from '@/components/ui/alert-dialog'
+import { DeleteConfirmationDialog } from '@/components/core/delete-confirmation-dialog'
 import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import {
@@ -50,9 +41,11 @@ export function TransactionsList({
     null
   )
 
-  const { mutateAsync: deleteTransaction } = useMutation({
-    mutationFn: deleteTransactionRequest
-  })
+  const { mutateAsync: deleteTransaction, isPending: isDeleting } = useMutation(
+    {
+      mutationFn: deleteTransactionRequest
+    }
+  )
 
   const queryClient = useQueryClient()
 
@@ -143,6 +136,7 @@ export function TransactionsList({
                         className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                         aria-label="Excluir transação"
                         onClick={() => setTransactionToDelete(transaction.id)}
+                        disabled={isDeleting}
                       >
                         <Trash2Icon className="size-4" />
                       </button>
@@ -155,28 +149,16 @@ export function TransactionsList({
         </Table>
       </div>
 
-      <AlertDialog
+      <DeleteConfirmationDialog
         open={!!transactionToDelete}
         onOpenChange={(open) => {
           if (!open) setTransactionToDelete(null)
         }}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Excluir transação</AlertDialogTitle>
-            <AlertDialogDescription>
-              Tem certeza que deseja excluir esta transação? Essa ação não pode
-              ser desfeita.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete}>
-              Excluir
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        onConfirm={handleDelete}
+        isLoading={isDeleting}
+        title="Excluir transação"
+        description="Tem certeza que deseja excluir esta transação? Essa ação não pode ser desfeita."
+      />
     </Card>
   )
 }
