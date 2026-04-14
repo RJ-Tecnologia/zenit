@@ -1,6 +1,3 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -23,10 +20,8 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import {
-  type SaveCategorySchema,
-  saveCategorySchema
-} from '../schemas/save-category-schema'
+import { useCategoryForm } from '../hooks/use-category-form'
+import type { SaveCategorySchema } from '../schemas/save-category-schema'
 import type { Category } from '../types'
 
 interface SaveCategoryDialogProps {
@@ -42,46 +37,18 @@ export function SaveCategoryDialog({
   onOpenChange,
   onSuccess
 }: SaveCategoryDialogProps) {
-  const isEditing = !!category
-
-  const form = useForm<SaveCategorySchema>({
-    resolver: zodResolver(saveCategorySchema),
-    defaultValues: {
-      name: '',
-      scope: 'BOTH'
+  const { form, isPending, isEditing, handleSubmit } = useCategoryForm({
+    category,
+    onSuccess: (data) => {
+      onSuccess?.(data)
+      onOpenChange(false)
     }
   })
-
-  useEffect(() => {
-    if (category) {
-      form.reset({
-        name: category.name,
-        scope: category.scope
-      })
-    } else {
-      form.reset({
-        name: '',
-        scope: 'BOTH'
-      })
-    }
-  }, [category, form])
-
-  async function onSubmit(data: SaveCategorySchema) {
-    // biome-ignore lint/suspicious/noExplicitAny: Temporary mock result
-    const result: any = {
-      id: category?.id || Math.random().toString(),
-      ...data
-    }
-
-    onSuccess?.(result)
-    onOpenChange(false)
-    form.reset()
-  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>
               {isEditing ? 'Editar Categoria' : 'Nova Categoria'}
@@ -101,6 +68,7 @@ export function SaveCategoryDialog({
                   {...form.register('name')}
                   id="name"
                   placeholder="Ex: Alimentação, Lazer..."
+                  disabled={isPending}
                 />
               </div>
               {form.formState.errors.name && (
@@ -119,6 +87,7 @@ export function SaveCategoryDialog({
                     form.setValue('scope', value as SaveCategorySchema['scope'])
                   }
                   value={form.watch('scope')}
+                  disabled={isPending}
                 >
                   <SelectTrigger id="scope">
                     <SelectValue placeholder="Selecione o tipo" />
@@ -144,10 +113,13 @@ export function SaveCategoryDialog({
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
+              disabled={isPending}
             >
               Cancelar
             </Button>
-            <Button type="submit">Salvar</Button>
+            <Button type="submit" disabled={isPending}>
+              {isPending ? 'Salvando...' : 'Salvar'}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
