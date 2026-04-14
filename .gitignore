@@ -28,4 +28,4 @@ dist-ssr
 .env.local
 
 # Spec files for IA
-/specs
+/src/specs

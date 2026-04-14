@@ -1,5 +1,6 @@
+import { type QueryClient, queryOptions } from '@tanstack/react-query'
 import {
-  createRootRoute,
+  createRootRouteWithContext,
   HeadContent,
   Outlet,
   redirect,
@@ -10,7 +11,18 @@ import { NavLinks } from '@/components/core/nav-links'
 import { ThemeToggle } from '@/components/core/theme-toggle'
 import { authClient } from '@/lib/auth-client'
 
-export const Route = createRootRoute({
+export const sessionQueryOptions = queryOptions({
+  queryKey: ['session'],
+  queryFn: async () => {
+    const { data: session } = await authClient.getSession()
+    return session
+  },
+  staleTime: 1000 * 60 * 60
+})
+
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient
+}>()({
   head: () => ({
     meta: [
       {
@@ -18,8 +30,9 @@ export const Route = createRootRoute({
       }
     ]
   }),
-  beforeLoad: async ({ location }) => {
-    const { data: session } = await authClient.getSession()
+  beforeLoad: async ({ context, location }) => {
+    const session =
+      await context.queryClient.ensureQueryData(sessionQueryOptions)
 
     const isLoginPage = ['/login', '/login/'].includes(location.pathname)
 

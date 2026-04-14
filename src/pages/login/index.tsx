@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Eye, EyeOff, Loader2 } from 'lucide-react'
 import { useState } from 'react'
@@ -36,8 +37,9 @@ function LoginPage() {
   const [error, setError] = useState<string | null>(null)
 
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.SubmitEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setError(null)
@@ -55,6 +57,7 @@ function LoginPage() {
     }
 
     if (data) {
+      queryClient.invalidateQueries({ queryKey: ['session'] })
       navigate({ to: '/' })
     }
   }
