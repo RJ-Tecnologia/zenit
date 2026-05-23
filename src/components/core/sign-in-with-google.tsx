@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button'
 import { env } from '@/env'
 import { authClient } from '@/lib/auth-client'
 import { cn } from '@/lib/utils'
@@ -20,22 +19,22 @@ export function SignInWithGoogle({ className }: SignInWithGoogleProps) {
   }
 
   return (
-    <Button
+    <button
       onClick={handleGoogleLogin}
-      variant="outline"
+      type="button"
       className={cn(
-        'h-11 rounded-md bg-white px-6 text-black hover:bg-neutral-100 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800',
+        'w-full border border-primary/50 text-on-surface font-title-md text-title-md py-3.5 rounded-lg flex items-center justify-center gap-3 hover:bg-primary/10 hover:border-primary hover:text-primary transition-all duration-300 active:scale-[0.98]',
         className
       )}
     >
       <img
         src="/google-icon.svg"
         alt="Google Icon"
-        width={18}
-        height={18}
-        className="shrink-0 mr-2"
+        width={22}
+        height={22}
+        className="shrink-0"
       />
       Fazer login com Google
-    </Button>
+    </button>
   )
 }
