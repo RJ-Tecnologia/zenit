@@ -6,6 +6,7 @@ import {
   Edit2Icon,
   Gamepad2Icon,
   InboxIcon,
+  type LucideIcon,
   ShoppingCartIcon,
   TagIcon,
   Trash2Icon
@@ -36,7 +37,7 @@ const SCOPE_LABELS: Record<Category['scope'], string> = {
   BOTH: 'Entrada e Saída'
 }
 
-const ICON_MAPPING: Record<string, any> = {
+const ICON_MAPPING: Record<string, LucideIcon> = {
   'Jogos digitais': Gamepad2Icon,
   Mercado: ShoppingCartIcon,
   Salário: DollarSignIcon

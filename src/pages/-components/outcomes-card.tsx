@@ -1,3 +1,4 @@
+import { TrendingDownIcon } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatCurrency } from '@/utils/format-currency'
 
@@ -11,30 +12,34 @@ export function OutcomesCard({
   outcomeChangePercentage
 }: OutcomesCardProps) {
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">Despesas</CardTitle>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          className="h-4 w-4 text-muted-foreground"
-        >
-          <title>Despesas</title>
-          <rect width="20" height="14" x="2" y="5" rx="2" />
-          <path d="M2 10h20" />
-        </svg>
+    <Card className="bg-white/5 backdrop-blur-xl border-white/8 rounded-2xl shadow-xl overflow-hidden relative group">
+      <div className="absolute top-0 right-0 p-6">
+        <div className="size-12 rounded-xl bg-error/10 flex items-center justify-center text-error border border-error/20 shadow-inner">
+          <TrendingDownIcon className="size-6 stroke-[2px]" />
+        </div>
+      </div>
+
+      <CardHeader className="pb-2">
+        <CardTitle className="text-body-md font-semibold text-muted-foreground">
+          Despesas
+        </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{formatCurrency(outcome)}</div>
-        {outcomeChangePercentage && (
-          <p className="text-xs text-muted-foreground">
-            {outcomeChangePercentage >= 0 ? '+' : ''}
-            {outcomeChangePercentage}% em relação ao mês passado
+        <div className="flex flex-col">
+          <span className="text-title-md font-bold text-muted-foreground mb-1">
+            R$
+          </span>
+          <div className="text-3xl md:text-4xl font-bold font-heading text-on-surface tabular-nums tracking-tight">
+            {formatCurrency(outcome).replace('R$', '').trim()}
+          </div>
+        </div>
+        {outcomeChangePercentage !== undefined && (
+          <p className="mt-2 text-[10px] text-muted-foreground font-medium">
+            Mês anterior:{' '}
+            <span className="text-on-surface">
+              {outcomeChangePercentage >= 0 ? '+' : ''}
+              {outcomeChangePercentage}%
+            </span>
           </p>
         )}
       </CardContent>

@@ -5,29 +5,34 @@ export function TransactionSkeleton() {
   return (
     <>
       {Array.from({ length: 5 }).map((_, i) => (
-        <TableRow key={`skeleton-${i}`}>
-          <TableCell>
-            <Skeleton className="size-5 rounded-full" />
+        <TableRow
+          key={`skeleton-${i}`}
+          className="border-white/8 hover:bg-transparent"
+        >
+          <TableCell className="px-8 py-5">
+            <Skeleton className="size-10 rounded-xl bg-white/5" />
           </TableCell>
-          <TableCell>
-            <Skeleton className="h-4 w-24" />
+          <TableCell className="py-5">
+            <Skeleton className="h-5 w-32 bg-white/5 rounded-lg" />
           </TableCell>
-          <TableCell className="hidden md:table-cell">
-            <Skeleton className="h-4 w-32" />
+          <TableCell className="hidden lg:table-cell py-5">
+            <Skeleton className="h-5 w-48 bg-white/5 rounded-lg" />
           </TableCell>
-          <TableCell>
-            <Skeleton className="h-4 w-20" />
+          <TableCell className="hidden md:table-cell py-5">
+            <Skeleton className="h-7 w-24 bg-white/5 rounded-full" />
           </TableCell>
-          <TableCell className="hidden sm:table-cell">
-            <Skeleton className="h-4 w-16" />
+          <TableCell className="hidden sm:table-cell py-5">
+            <Skeleton className="h-5 w-20 bg-white/5 rounded-lg" />
           </TableCell>
-          <TableCell>
-            <Skeleton className="h-4 w-12 ml-auto" />
+          <TableCell className="py-5">
+            <div className="flex justify-end">
+              <Skeleton className="h-5 w-24 bg-white/5 rounded-lg" />
+            </div>
           </TableCell>
-          <TableCell>
+          <TableCell className="px-8 py-5">
             <div className="flex justify-end gap-2">
-              <Skeleton className="size-8 rounded-md" />
-              <Skeleton className="size-8 rounded-md" />
+              <Skeleton className="size-9 rounded-lg bg-white/5" />
+              <Skeleton className="size-9 rounded-lg bg-white/5" />
             </div>
           </TableCell>
         </TableRow>

@@ -62,40 +62,51 @@ export function MonthNavigator({ year, month, minDate }: MonthNavigatorProps) {
   const label = format(selectedDate, "MMMM 'de' yyyy", { locale: ptBR })
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-3 bg-white/5 backdrop-blur-xl border border-white/8 p-1.5 rounded-2xl shadow-lg">
+      <div className="flex items-center gap-1">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={handlePrevious}
+          disabled={isFirstMonth}
+          className="size-9 rounded-xl text-muted-foreground hover:bg-white/10 hover:text-on-surface"
+        >
+          <ChevronLeft className="size-5 stroke-[2px]" />
+        </Button>
+
+        <div className="min-w-40 flex flex-col items-center">
+          <span className="text-sm font-bold capitalize text-on-surface">
+            {label.split(' de ')[0]}
+          </span>
+          <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">
+            {label.split(' de ')[1]}
+          </span>
+        </div>
+
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={handleNext}
+          disabled={isCurrentMonth}
+          className="size-9 rounded-xl text-muted-foreground hover:bg-white/10 hover:text-on-surface"
+        >
+          <ChevronRight className="size-5 stroke-[2px]" />
+        </Button>
+      </div>
+
+      {!isCurrentMonth && <div className="h-6 w-px bg-white/8 mx-1" />}
+
       {!isCurrentMonth && (
         <Button
-          variant="outline"
+          variant="ghost"
           size="sm"
           onClick={handleCurrentMonth}
-          className="h-9 px-3"
+          className="h-9 px-4 rounded-xl text-primary font-bold hover:bg-primary/10 hover:text-primary transition-all"
         >
-          <Calendar className="mr-2 size-4" />
+          <Calendar className="mr-2 size-4 stroke-[2px]" />
           Hoje
         </Button>
       )}
-
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={handlePrevious}
-        disabled={isFirstMonth}
-      >
-        <ChevronLeft className="size-4" />
-      </Button>
-
-      <span className="min-w-45 text-center text-sm font-medium capitalize">
-        {label}
-      </span>
-
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={handleNext}
-        disabled={isCurrentMonth}
-      >
-        <ChevronRight className="size-4" />
-      </Button>
     </div>
   )
 }

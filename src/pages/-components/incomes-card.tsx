@@ -1,3 +1,4 @@
+import { TrendingUpIcon } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatCurrency } from '@/utils/format-currency'
 
@@ -11,31 +12,34 @@ export function IncomesCard({
   incomeChangePercentage
 }: IncomesCardProps) {
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">Receitas</CardTitle>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          className="h-4 w-4 text-muted-foreground"
-        >
-          <title>Receitas</title>
-          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-          <circle cx="9" cy="7" r="4" />
-          <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-        </svg>
+    <Card className="bg-white/5 backdrop-blur-xl border-white/8 rounded-2xl shadow-xl overflow-hidden relative group">
+      <div className="absolute top-0 right-0 p-6">
+        <div className="size-12 rounded-xl bg-tertiary/10 flex items-center justify-center text-tertiary border border-tertiary/20 shadow-inner">
+          <TrendingUpIcon className="size-6 stroke-[2px]" />
+        </div>
+      </div>
+
+      <CardHeader className="pb-2">
+        <CardTitle className="text-body-md font-semibold text-muted-foreground">
+          Receitas
+        </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{formatCurrency(income)}</div>
-        {incomeChangePercentage && (
-          <p className="text-xs text-muted-foreground">
-            {incomeChangePercentage >= 0 ? '+' : ''}
-            {incomeChangePercentage}% em relação ao mês passado
+        <div className="flex flex-col">
+          <span className="text-title-md font-bold text-muted-foreground mb-1">
+            R$
+          </span>
+          <div className="text-3xl md:text-4xl font-bold font-heading text-on-surface tabular-nums tracking-tight">
+            {formatCurrency(income).replace('R$', '').trim()}
+          </div>
+        </div>
+        {incomeChangePercentage !== undefined && (
+          <p className="mt-2 text-[10px] text-muted-foreground font-medium">
+            Mês anterior:{' '}
+            <span className="text-on-surface">
+              {incomeChangePercentage >= 0 ? '+' : ''}
+              {incomeChangePercentage}%
+            </span>
           </p>
         )}
       </CardContent>

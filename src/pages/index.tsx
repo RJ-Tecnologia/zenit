@@ -44,14 +44,14 @@ function HomePage() {
     : undefined
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <main className="px-6 md:px-10 py-6">
+      <div className="mb-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">
+          <h2 className="text-3xl md:text-display-lg font-heading text-on-surface">
             Bem-vindo de volta!
           </h2>
-          <p className="text-muted-foreground">
-            Aqui está um resumo das suas finanças
+          <p className="mt-1 md:mt-2 text-body-md md:text-body-lg text-muted-foreground">
+            Aqui está um resumo da sua saúde financeira hoje.
           </p>
         </div>
 

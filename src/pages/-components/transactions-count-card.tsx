@@ -1,3 +1,4 @@
+import { ArrowLeftRightIcon } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface TransactionsCountCardProps {
@@ -10,29 +11,34 @@ export function TransactionsCountCard({
   transactionsCountChangePercentage
 }: TransactionsCountCardProps) {
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">Transações</CardTitle>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          className="h-4 w-4 text-muted-foreground"
-        >
-          <title>Transações</title>
-          <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-        </svg>
+    <Card className="bg-white/5 backdrop-blur-xl border-white/8 rounded-2xl shadow-xl overflow-hidden relative group">
+      <div className="absolute top-0 right-0 p-6">
+        <div className="size-12 rounded-xl bg-white/10 flex items-center justify-center text-muted-foreground border border-white/10 shadow-inner">
+          <ArrowLeftRightIcon className="size-6 stroke-[2px]" />
+        </div>
+      </div>
+
+      <CardHeader className="pb-2">
+        <CardTitle className="text-body-md font-semibold text-muted-foreground">
+          Transações
+        </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{transactionsCount}</div>
-        {transactionsCountChangePercentage && (
-          <p className="text-xs text-muted-foreground">
-            {transactionsCountChangePercentage >= 0 ? '+' : ''}
-            {transactionsCountChangePercentage}% em relação ao mês passado
+        <div className="flex flex-col">
+          <span className="text-title-md font-bold text-muted-foreground mb-1">
+            Total
+          </span>
+          <div className="text-3xl md:text-4xl font-bold font-heading text-on-surface tabular-nums tracking-tight">
+            {transactionsCount}
+          </div>
+        </div>
+        {transactionsCountChangePercentage !== undefined && (
+          <p className="mt-2 text-[10px] text-muted-foreground font-medium">
+            Mês anterior:{' '}
+            <span className="text-on-surface">
+              {transactionsCountChangePercentage >= 0 ? '+' : ''}
+              {transactionsCountChangePercentage}%
+            </span>
           </p>
         )}
       </CardContent>
