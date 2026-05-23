@@ -18,8 +18,13 @@ export function NewTransactionButton({ className }: NewTransactionButtonProps) {
   return (
     <SaveTransactionDialog
       trigger={
-        <Button className={cn('gap-2', className)}>
-          <PlusIcon className="size-4" />
+        <Button
+          className={cn(
+            'gap-2 h-11 px-6 rounded-xl font-bold shadow-lg shadow-primary/20',
+            className
+          )}
+        >
+          <PlusIcon className="size-5" />
           Nova Transação
         </Button>
       }
