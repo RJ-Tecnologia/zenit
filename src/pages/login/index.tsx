@@ -61,11 +61,11 @@ function LoginPage() {
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background px-4 py-12 selection:bg-primary/30 selection:text-primary-fixed">
       {/* Ambient Background Effects */}
-      <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] bg-primary/10 rounded-full blur-[120px] pointer-events-none opacity-50 mix-blend-screen" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-secondary-container/20 rounded-full blur-[100px] pointer-events-none opacity-40 mix-blend-screen" />
+      <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] max-w-200 max-h-200 bg-primary/10 rounded-full blur-[120px] pointer-events-none opacity-50 mix-blend-screen" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] max-w-150 max-h-150 bg-secondary-container/20 rounded-full blur-[100px] pointer-events-none opacity-40 mix-blend-screen" />
 
       {/* Main Container */}
-      <div className="relative z-10 w-full max-w-[460px]">
+      <div className="relative z-10 w-full max-w-115">
         {/* Login Card */}
         <main className="bg-surface/50 backdrop-blur-[20px] border border-white/5 rounded-[24px] p-8 sm:p-10 shadow-[0_20px_40px_rgba(0,0,0,0.4)] relative overflow-hidden group">
           {/* Inner Glow Highlight */}
@@ -73,7 +73,7 @@ function LoginPage() {
 
           {/* Header & Logo Area */}
           <header className="flex flex-col items-center mb-10">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-transparent flex items-center justify-center mb-6 border border-primary/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
+            <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-primary/20 to-transparent flex items-center justify-center mb-6 border border-primary/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
               <Landmark className="size-7 text-primary" strokeWidth={1.5} />
             </div>
             <h1 className="font-headline-lg-mobile sm:font-headline-lg text-headline-lg-mobile sm:text-headline-lg text-on-surface mb-2 text-center tracking-tight">
@@ -187,11 +187,11 @@ function LoginPage() {
 
           {/* Divider */}
           <div className="flex items-center gap-4 my-8">
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-outline-variant to-transparent opacity-50" />
+            <div className="h-px flex-1 bg-linear-to-r from-transparent via-outline-variant to-transparent opacity-50" />
             <span className="font-label-sm text-label-sm text-outline-variant uppercase">
               ou
             </span>
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-outline-variant to-transparent opacity-50" />
+            <div className="h-px flex-1 bg-linear-to-r from-transparent via-outline-variant to-transparent opacity-50" />
           </div>
 
           {/* Social Login Button */}

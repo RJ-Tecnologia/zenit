@@ -2,9 +2,14 @@ import { useQuery } from '@tanstack/react-query'
 import { PlusIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { getCategoriesRequest } from '@/http/get-categories'
+import { cn } from '@/lib/utils'
 import { SaveTransactionDialog } from '../components/save-transaction-dialog'
 
-export function NewTransactionButton() {
+interface NewTransactionButtonProps {
+  className?: string
+}
+
+export function NewTransactionButton({ className }: NewTransactionButtonProps) {
   const { data } = useQuery({
     queryKey: ['get-categories'],
     queryFn: getCategoriesRequest
@@ -13,7 +18,7 @@ export function NewTransactionButton() {
   return (
     <SaveTransactionDialog
       trigger={
-        <Button className="gap-2">
+        <Button className={cn('gap-2', className)}>
           <PlusIcon className="size-4" />
           Nova Transação
         </Button>

@@ -6,9 +6,9 @@ import {
   redirect,
   useLocation
 } from '@tanstack/react-router'
-import { LogoutButton } from '@/components/core/logout-button'
-import { NavLinks } from '@/components/core/nav-links'
-import { ThemeToggle } from '@/components/core/theme-toggle'
+import { MobileHeader } from '@/components/core/mobile-header'
+import { Sidebar } from '@/components/core/sidebar'
+import { TopBar } from '@/components/core/top-bar'
 import { authClient } from '@/lib/auth-client'
 
 export const sessionQueryOptions = queryOptions({
@@ -59,30 +59,25 @@ function RootComponent() {
   const isLoginPage = ['/login', '/login/'].includes(location.pathname)
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-on-background font-body-md">
       <HeadContent />
       {!isLoginPage && (
-        <header className="border-b">
-          <div className="container mx-auto flex items-center justify-between px-4 py-4">
-            <div className="flex items-center gap-8">
-              <div>
-                <h1 className="text-2xl font-bold">Zenit Finance</h1>
-                <p className="text-sm text-muted-foreground">
-                  Dashboard Financeiro
-                </p>
-              </div>
-              <NavLinks />
-            </div>
-            <div className="flex items-center gap-2">
-              <ThemeToggle />
-              <LogoutButton />
-            </div>
+        <>
+          <Sidebar />
+          <MobileHeader />
+          <div className="md:pl-64 flex flex-col min-h-screen">
+            <TopBar />
+            <main className="flex-1 overflow-y-auto pb-10">
+              <Outlet />
+            </main>
           </div>
-        </header>
+        </>
       )}
-      <main>
-        <Outlet />
-      </main>
+      {isLoginPage && (
+        <main>
+          <Outlet />
+        </main>
+      )}
     </div>
   )
 }

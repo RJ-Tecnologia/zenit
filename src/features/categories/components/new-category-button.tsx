@@ -8,8 +8,11 @@ export function NewCategoryButton() {
 
   return (
     <>
-      <Button onClick={() => setOpen(true)} className="gap-2">
-        <PlusIcon className="size-4" />
+      <Button
+        onClick={() => setOpen(true)}
+        className="gap-2 h-11 px-6 rounded-xl font-bold shadow-lg shadow-primary/20"
+      >
+        <PlusIcon className="size-5" />
         Nova Categoria
       </Button>
 
