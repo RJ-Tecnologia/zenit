@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useSearch } from '@tanstack/react-router'
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -12,6 +13,7 @@ import { DeleteConfirmationDialog } from '@/components/core/delete-confirmation-
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useDebounce } from '@/hooks/use-debounce'
 import { deleteCategoryRequest } from '@/http/delete-category'
 import { getCategoriesRequest } from '@/http/get-categories'
 import { cn } from '@/lib/utils'
@@ -26,14 +28,17 @@ const SCOPE_LABELS: Record<Category['scope'], string> = {
 }
 
 export function CategoryList() {
+  const { q } = useSearch({ from: '/categories/' })
+  const debouncedSearch = useDebounce(q, 500)
+
   const [editingCategory, setEditingCategory] = useState<Category | null>(null)
   const [categoryToDelete, setCategoryToDelete] = useState<string | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const queryClient = useQueryClient()
 
   const { data, isLoading } = useQuery({
-    queryKey: ['get-categories'],
-    queryFn: getCategoriesRequest
+    queryKey: ['get-categories', debouncedSearch],
+    queryFn: () => getCategoriesRequest({ name: debouncedSearch })
   })
 
   const { mutateAsync: deleteCategory, isPending: isDeleting } = useMutation({

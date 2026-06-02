@@ -12,7 +12,7 @@ interface NewTransactionButtonProps {
 export function NewTransactionButton({ className }: NewTransactionButtonProps) {
   const { data } = useQuery({
     queryKey: ['get-categories'],
-    queryFn: getCategoriesRequest
+    queryFn: () => getCategoriesRequest()
   })
 
   return (

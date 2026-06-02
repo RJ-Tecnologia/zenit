@@ -20,7 +20,7 @@ export function TransactionsContent() {
 
   const { data: categoriesData, isLoading: isLoadingCategories } = useQuery({
     queryKey: ['get-categories'],
-    queryFn: getCategoriesRequest
+    queryFn: () => getCategoriesRequest()
   })
 
   const isLoading = isLoadingTransactions || isLoadingCategories

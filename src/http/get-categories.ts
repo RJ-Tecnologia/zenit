@@ -5,8 +5,16 @@ interface GetCategoriesResponse {
   categories: Category[]
 }
 
-export async function getCategoriesRequest() {
-  const response = await api.get<GetCategoriesResponse>('/categories')
+interface GetCategoriesRequest {
+  name?: string
+}
+
+export async function getCategoriesRequest({
+  name
+}: GetCategoriesRequest = {}) {
+  const response = await api.get<GetCategoriesResponse>('/categories', {
+    params: { name }
+  })
 
   return response.data
 }
