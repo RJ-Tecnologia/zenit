@@ -2,13 +2,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   ArrowDownIcon,
   ArrowUpIcon,
-  DollarSignIcon,
   Edit2Icon,
-  Gamepad2Icon,
   InboxIcon,
-  type LucideIcon,
-  ShoppingCartIcon,
-  TagIcon,
   Trash2Icon
 } from 'lucide-react'
 import { useState } from 'react'
@@ -28,6 +23,7 @@ import {
 import { deleteCategoryRequest } from '@/http/delete-category'
 import { getCategoriesRequest } from '@/http/get-categories'
 import { cn } from '@/lib/utils'
+import { getIconByName } from '@/utils/icon-mapper'
 import type { Category } from '../types'
 import { SaveCategoryDialog } from './save-category-dialog'
 
@@ -35,16 +31,6 @@ const SCOPE_LABELS: Record<Category['scope'], string> = {
   INCOME: 'Entrada',
   OUTCOME: 'Saída',
   BOTH: 'Entrada e Saída'
-}
-
-const ICON_MAPPING: Record<string, LucideIcon> = {
-  'Jogos digitais': Gamepad2Icon,
-  Mercado: ShoppingCartIcon,
-  Salário: DollarSignIcon
-}
-
-function getCategoryIcon(name: string) {
-  return ICON_MAPPING[name] || TagIcon
 }
 
 export function CategoryList() {
@@ -124,7 +110,7 @@ export function CategoryList() {
         </TableHeader>
         <TableBody>
           {categories.map((category) => {
-            const Icon = getCategoryIcon(category.name)
+            const Icon = getIconByName(category.icon)
             return (
               <TableRow
                 key={category.id}

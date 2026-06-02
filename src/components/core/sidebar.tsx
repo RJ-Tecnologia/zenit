@@ -24,7 +24,7 @@ export function Sidebar() {
         <h1 className="text-xl font-bold text-primary font-heading">
           Zenit Finance
         </h1>
-        <p className="text-xs text-muted-foreground">Wealth Management</p>
+        <p className="text-xs text-muted-foreground">Organização Financeira</p>
       </div>
 
       <div className="mb-10">

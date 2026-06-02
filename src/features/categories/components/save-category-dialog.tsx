@@ -20,6 +20,8 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import { ICON_MAP } from '@/utils/icon-mapper'
+import { AVAILABLE_ICONS } from '@/utils/icons'
 import { useCategoryForm } from '../hooks/use-category-form'
 import type { SaveCategorySchema } from '../schemas/save-category-schema'
 import type { Category } from '../types'
@@ -102,6 +104,42 @@ export function SaveCategoryDialog({
               {form.formState.errors.scope && (
                 <FieldErrorComponent
                   errors={[form.formState.errors.scope]}
+                  className="text-xs"
+                />
+              )}
+            </Field>
+
+            <Field>
+              <div className="space-y-2">
+                <FieldLabel htmlFor="icon">Ícone</FieldLabel>
+                <Select
+                  onValueChange={(value) => form.setValue('icon', value)}
+                  value={form.watch('icon')}
+                  disabled={isPending}
+                >
+                  <SelectTrigger id="icon">
+                    <SelectValue placeholder="Selecione um ícone" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {AVAILABLE_ICONS.map((icon) => {
+                      const Icon = ICON_MAP[icon as keyof typeof ICON_MAP]
+                      return (
+                        <SelectItem key={icon} value={icon}>
+                          <div className="flex items-center gap-2">
+                            <Icon className="size-4" />
+                            <span className="capitalize">
+                              {icon.replace(/-/g, ' ')}
+                            </span>
+                          </div>
+                        </SelectItem>
+                      )
+                    })}
+                  </SelectContent>
+                </Select>
+              </div>
+              {form.formState.errors.icon && (
+                <FieldErrorComponent
+                  errors={[form.formState.errors.icon]}
                   className="text-xs"
                 />
               )}

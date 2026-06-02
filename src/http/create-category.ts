@@ -4,6 +4,7 @@ import { api } from '@/lib/api'
 interface CreateCategoryRequest {
   name: string
   scope: CategoryScope
+  icon: string
 }
 
 interface CreateCategoryResponse {
@@ -12,11 +13,13 @@ interface CreateCategoryResponse {
 
 export async function createCategoryRequest({
   name,
-  scope
+  scope,
+  icon
 }: CreateCategoryRequest) {
   const response = await api.post<CreateCategoryResponse>('/categories', {
     name,
-    scope
+    scope,
+    icon
   })
 
   return response.data

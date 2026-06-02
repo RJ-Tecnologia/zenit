@@ -4,4 +4,5 @@ export interface Category {
   id: string
   name: string
   scope: CategoryScope
+  icon: string
 }

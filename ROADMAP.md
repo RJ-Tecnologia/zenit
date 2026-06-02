@@ -119,10 +119,10 @@
 - Realizar mudanças na interface do projeto e na usabilidade
 
 ### Tarefas
-- [ ] Alterar a paleta de cores para ter uma identidade visual própria
-  - [ ] Buscar inspirações no Dribbble, Figma, Pinterest ou outro local
-- [ ] Alterar a interface da aplicação deixando-a com um visual mais moderno utilizando a nova paleta de cores
-- [ ] Testar a usabilidade do projeto e melhorar conforme for encontrando pontos de melhoria
+- [X] Alterar a paleta de cores para ter uma identidade visual própria
+  - [X] Buscar inspirações no Dribbble, Figma, Pinterest ou outro local
+- [X] Alterar a interface da aplicação deixando-a com um visual mais moderno utilizando a nova paleta de cores
+- [X] Testar a usabilidade do projeto e melhorar conforme for encontrando pontos de melhoria
 
 ---
 

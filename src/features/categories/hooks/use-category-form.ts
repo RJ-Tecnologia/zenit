@@ -24,7 +24,8 @@ export function useCategoryForm({ category, onSuccess }: UseCategoryFormProps) {
     resolver: zodResolver(saveCategorySchema),
     defaultValues: {
       name: category?.name ?? '',
-      scope: category?.scope ?? 'BOTH'
+      scope: category?.scope ?? 'BOTH',
+      icon: category?.icon ?? ''
     }
   })
 
@@ -32,7 +33,8 @@ export function useCategoryForm({ category, onSuccess }: UseCategoryFormProps) {
     if (category) {
       form.reset({
         name: category.name,
-        scope: category.scope
+        scope: category.scope,
+        icon: category.icon
       })
     }
   }, [category, form])
