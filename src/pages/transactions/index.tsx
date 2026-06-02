@@ -1,8 +1,17 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { z } from 'zod'
 import { NewTransactionButton } from '@/features/transactions/components/new-transaction-button'
 import { TransactionsContent } from '@/features/transactions/components/transaction-content'
 
+const transactionsSearchSchema = z.object({
+  q: z.string().optional().catch(''),
+  type: z.enum(['all', 'income', 'outcome']).optional().catch('all'),
+  page: z.coerce.number().optional().catch(1),
+  limit: z.coerce.number().optional().catch(20)
+})
+
 export const Route = createFileRoute('/transactions/')({
+  validateSearch: (search) => transactionsSearchSchema.parse(search),
   head: () => ({
     meta: [
       {

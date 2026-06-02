@@ -1,16 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
 import { format } from 'date-fns'
 import {
+  ArrowDownIcon,
   ArrowUpIcon,
-  CarIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  DollarSignIcon,
   Edit2Icon,
-  Gamepad2Icon,
-  type LucideIcon,
-  ShoppingCartIcon,
-  TagIcon,
   Trash2Icon
 } from 'lucide-react'
 import { useState } from 'react'
@@ -28,6 +24,7 @@ import {
 import type { Category } from '@/features/categories/types'
 import { deleteTransactionRequest } from '@/http/delete-transaction'
 import { cn } from '@/lib/utils'
+import { Route } from '@/pages/transactions/index'
 import { formatCurrency } from '@/utils/format-currency'
 import type { Transaction } from '../types'
 import { SaveTransactionDialog } from './save-transaction-dialog'
@@ -37,28 +34,21 @@ interface TransactionListProps {
   transactions: Transaction[]
   categories: Category[]
   isLoading?: boolean
-  totalCount: number
-}
-
-const ICON_MAPPING: Record<string, LucideIcon> = {
-  'Jogos digitais': Gamepad2Icon,
-  Mercado: ShoppingCartIcon,
-  Salário: DollarSignIcon,
-  Uber: CarIcon,
-  Renda: DollarSignIcon,
-  Transporte: CarIcon
-}
-
-function getTransactionIcon(categoryName: string) {
-  return ICON_MAPPING[categoryName] || TagIcon
+  meta?: {
+    currentPage: number
+    lastPage: number
+    perPage: number
+    total: number
+  }
 }
 
 export function TransactionsList({
   transactions,
   categories,
   isLoading,
-  totalCount
+  meta
 }: TransactionListProps) {
+  const navigate = useNavigate({ from: Route.fullPath })
   const [transactionToDelete, setTransactionToDelete] = useState<string | null>(
     null
   )
@@ -89,6 +79,23 @@ export function TransactionsList({
       categories.find(({ id }) => id === categoryId)?.name || 'Sem Categoria'
     )
   }
+
+  const handlePageChange = (newPage: number) => {
+    navigate({
+      search: (old) => ({
+        ...old,
+        page: newPage
+      })
+    })
+  }
+
+  const currentPage = meta?.currentPage ?? 1
+  const totalPages = meta?.lastPage ?? 1
+  const perPage = meta?.perPage ?? 20
+  const totalCount = meta?.total ?? 0
+
+  const from = (currentPage - 1) * perPage + 1
+  const to = Math.min(currentPage * perPage, totalCount)
 
   return (
     <div className="rounded-2xl border border-white/8 bg-white/5 backdrop-blur-xl overflow-hidden shadow-2xl">
@@ -122,10 +129,18 @@ export function TransactionsList({
           <TableBody>
             {isLoading ? (
               <TransactionSkeleton />
+            ) : transactions.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={7}
+                  className="py-10 text-center text-muted-foreground"
+                >
+                  Nenhuma transação encontrada.
+                </TableCell>
+              </TableRow>
             ) : (
               transactions.map((transaction) => {
                 const categoryName = getCategoryNameById(transaction.categoryId)
-                const Icon = getTransactionIcon(categoryName)
 
                 return (
                   <TableRow
@@ -144,7 +159,7 @@ export function TransactionsList({
                         {transaction.type === 'INCOME' ? (
                           <ArrowUpIcon className="size-5 stroke-[2.5px]" />
                         ) : (
-                          <Icon className="size-5 stroke-[2px]" />
+                          <ArrowDownIcon className="size-5 stroke-[2px]" />
                         )}
                       </div>
                     </TableCell>
@@ -182,7 +197,7 @@ export function TransactionsList({
                       </span>
                     </TableCell>
                     <TableCell className="px-8 py-5 text-right">
-                      <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex items-center justify-end gap-2 transition-opacity">
                         <SaveTransactionDialog
                           trigger={
                             <Button
@@ -219,7 +234,7 @@ export function TransactionsList({
         <p className="text-label-sm text-muted-foreground">
           Mostrando{' '}
           <span className="text-on-surface font-semibold">
-            1 a {transactions.length}
+            {totalCount > 0 ? from : 0} a {to}
           </span>{' '}
           de <span className="text-on-surface font-semibold">{totalCount}</span>{' '}
           transações
@@ -230,37 +245,53 @@ export function TransactionsList({
             variant="ghost"
             size="icon"
             className="size-8 rounded-lg text-muted-foreground hover:bg-white/5"
-            disabled
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage <= 1 || isLoading}
           >
             <ChevronLeftIcon className="size-4" />
           </Button>
           <div className="flex items-center gap-1">
-            <Button
-              size="sm"
-              className="size-8 rounded-lg bg-primary/20 text-primary hover:bg-primary/30 border border-primary/20 font-bold"
-            >
-              1
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="size-8 rounded-lg text-muted-foreground hover:bg-white/5 font-semibold"
-            >
-              2
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="size-8 rounded-lg text-muted-foreground hover:bg-white/5 font-semibold"
-            >
-              3
-            </Button>
-            <span className="text-muted-foreground px-1">...</span>
+            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+              // Simple pagination logic for 5 pages around current
+              let pageNumber = currentPage
+              if (totalPages <= 5) {
+                pageNumber = i + 1
+              } else if (currentPage <= 3) {
+                pageNumber = i + 1
+              } else if (currentPage >= totalPages - 2) {
+                pageNumber = totalPages - 4 + i
+              } else {
+                pageNumber = currentPage - 2 + i
+              }
+
+              return (
+                <Button
+                  key={pageNumber}
+                  variant={currentPage === pageNumber ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => handlePageChange(pageNumber)}
+                  className={cn(
+                    'size-8 rounded-lg font-bold transition-all',
+                    currentPage === pageNumber
+                      ? 'bg-primary/20 text-primary hover:bg-primary/30 border border-primary/20'
+                      : 'text-muted-foreground hover:bg-white/5 font-semibold'
+                  )}
+                  disabled={isLoading}
+                >
+                  {pageNumber}
+                </Button>
+              )
+            })}
+            {totalPages > 5 && currentPage < totalPages - 2 && (
+              <span className="text-muted-foreground px-1">...</span>
+            )}
           </div>
           <Button
             variant="ghost"
             size="icon"
             className="size-8 rounded-lg text-muted-foreground hover:bg-white/5"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage >= totalPages || isLoading}
           >
             <ChevronRightIcon className="size-4" />
           </Button>
