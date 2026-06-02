@@ -90,7 +90,7 @@ export function MobileHeader() {
 
           <div className="mt-auto space-y-2 pt-6 border-t border-white/8">
             <Link
-              to="/"
+              to="/profile"
               onClick={() => setOpen(false)}
               className="flex items-center gap-3 px-4 py-4 rounded-lg text-base font-medium text-muted-foreground hover:text-on-surface hover:bg-white/5 transition-all"
             >

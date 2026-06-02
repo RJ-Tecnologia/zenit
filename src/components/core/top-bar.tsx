@@ -1,18 +1,12 @@
+import { Link } from '@tanstack/react-router'
 import { BellIcon, SettingsIcon } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { authClient } from '@/lib/auth-client'
+import { getInitials } from '@/utils/get-initials'
 
 export function TopBar() {
   const { data: session, isPending } = authClient.useSession()
   const user = session?.user
-
-  const getInitials = (name?: string) => {
-    if (!name) return ''
-    const parts = name.trim().split(' ')
-    if (parts.length === 0) return ''
-    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase()
-    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
-  }
 
   return (
     <header className="h-20 hidden md:flex items-center justify-end px-10">
@@ -33,7 +27,10 @@ export function TopBar() {
         {isPending ? (
           <Skeleton className="size-10 rounded-full" />
         ) : (
-          <div className="size-10 rounded-full bg-surface-container-high border border-white/8 overflow-hidden cursor-pointer flex items-center justify-center">
+          <Link
+            to="/profile"
+            className="size-10 rounded-full bg-surface-container-high border border-white/8 overflow-hidden cursor-pointer flex items-center justify-center transition-all hover:border-primary/50"
+          >
             {user?.image ? (
               <img
                 src={user.image}
@@ -45,7 +42,7 @@ export function TopBar() {
                 {getInitials(user?.name)}
               </span>
             )}
-          </div>
+          </Link>
         )}
       </div>
     </header>

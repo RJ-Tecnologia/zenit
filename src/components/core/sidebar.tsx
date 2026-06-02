@@ -68,7 +68,7 @@ export function Sidebar() {
 
       <div className="mt-auto space-y-2 pt-6 border-t border-white/8">
         <Link
-          to="/"
+          to="/profile"
           className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-on-surface hover:bg-white/5 transition-all"
         >
           <UserIcon className="size-5 stroke-[2px]" />
