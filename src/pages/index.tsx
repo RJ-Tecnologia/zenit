@@ -3,7 +3,6 @@ import { createFileRoute } from '@tanstack/react-router'
 import { endOfMonth, startOfMonth } from 'date-fns'
 import z from 'zod'
 import { getTransactionsSummaryRequest } from '@/http/get-transactions-summary'
-import { sessionQueryOptions } from './__root'
 import { DashboardSummary } from './-components/dashboard-summary'
 import { MonthNavigator } from './-components/month-navigator'
 
@@ -25,8 +24,6 @@ export const Route = createFileRoute('/')({
 function HomePage() {
   const { month, year } = Route.useSearch()
 
-  const { data: session } = useQuery(sessionQueryOptions)
-
   const now = new Date()
   const selectedMonth = month ?? now.getMonth() + 1
   const selectedYear = year ?? now.getFullYear()
@@ -38,10 +35,6 @@ function HomePage() {
     queryKey: ['get-transactions-summary', { startDate, endDate }],
     queryFn: () => getTransactionsSummaryRequest({ startDate, endDate })
   })
-
-  const userRegistrationDate = session?.user?.createdAt
-    ? new Date(session.user.createdAt)
-    : undefined
 
   return (
     <main className="px-6 md:px-10 py-6">
@@ -55,11 +48,7 @@ function HomePage() {
           </p>
         </div>
 
-        <MonthNavigator
-          month={selectedMonth}
-          year={selectedYear}
-          minDate={userRegistrationDate}
-        />
+        <MonthNavigator month={selectedMonth} year={selectedYear} />
       </div>
 
       <DashboardSummary summary={transactionsSummary} />

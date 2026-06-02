@@ -7,10 +7,9 @@ import { Button } from '@/components/ui/button'
 interface MonthNavigatorProps {
   year: number
   month: number
-  minDate?: Date
 }
 
-export function MonthNavigator({ year, month, minDate }: MonthNavigatorProps) {
+export function MonthNavigator({ year, month }: MonthNavigatorProps) {
   const navigate = useNavigate()
   const now = new Date()
   const currentYear = now.getFullYear()
@@ -18,9 +17,6 @@ export function MonthNavigator({ year, month, minDate }: MonthNavigatorProps) {
 
   const selectedDate = new Date(year, month - 1, 1)
   const isCurrentMonth = year === currentYear && month === currentMonth
-
-  const isFirstMonth =
-    minDate && year <= minDate.getFullYear() && month <= minDate.getMonth() + 1
 
   function handlePrevious() {
     const newDate = subMonths(selectedDate, 1)
@@ -68,7 +64,6 @@ export function MonthNavigator({ year, month, minDate }: MonthNavigatorProps) {
           variant="ghost"
           size="icon"
           onClick={handlePrevious}
-          disabled={isFirstMonth}
           className="size-9 rounded-xl text-muted-foreground hover:bg-white/10 hover:text-on-surface"
         >
           <ChevronLeft className="size-5 stroke-[2px]" />
