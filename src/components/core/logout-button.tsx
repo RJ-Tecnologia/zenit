@@ -16,7 +16,8 @@ export function LogoutButton({ variant = 'default' }: LogoutButtonProps) {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ['session'] })
+          queryClient.setQueryData(['session'], null)
+          queryClient.removeQueries({ queryKey: ['session'] })
           navigate({ to: '/login' })
         }
       }
@@ -28,7 +29,7 @@ export function LogoutButton({ variant = 'default' }: LogoutButtonProps) {
       <button
         type="button"
         onClick={handleLogout}
-        className="flex w-full items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-on-surface hover:bg-white/5 transition-all"
+        className="flex w-full items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-muted-foreground hover:text-on-surface hover:bg-white/5 transition-all cursor-pointer"
       >
         <LogOutIcon className="size-5 stroke-[2px]" />
         Sair
