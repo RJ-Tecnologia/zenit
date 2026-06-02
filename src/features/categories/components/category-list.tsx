@@ -12,14 +12,6 @@ import { DeleteConfirmationDialog } from '@/components/core/delete-confirmation-
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
 import { deleteCategoryRequest } from '@/http/delete-category'
 import { getCategoriesRequest } from '@/http/get-categories'
 import { cn } from '@/lib/utils'
@@ -68,10 +60,13 @@ export function CategoryList() {
 
   if (isLoading) {
     return (
-      <div className="rounded-xl border border-white/8 bg-white/5 backdrop-blur-xl p-4 space-y-4">
-        <Skeleton className="h-10 w-full bg-white/5" />
-        <Skeleton className="h-10 w-full bg-white/5" />
-        <Skeleton className="h-10 w-full bg-white/5" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {[...Array(8)].map((_, i) => (
+          <Skeleton
+            key={i}
+            className="h-40 w-full bg-white/5 rounded-xl border border-white/8"
+          />
+        ))}
       </div>
     )
   }
@@ -93,90 +88,75 @@ export function CategoryList() {
   }
 
   return (
-    <div className="rounded-xl border border-white/8 bg-white/5 backdrop-blur-xl overflow-hidden shadow-2xl">
-      <Table>
-        <TableHeader className="bg-white/5 border-b border-white/8">
-          <TableRow className="hover:bg-transparent border-none">
-            <TableHead className="text-[10px] md:text-label-sm uppercase tracking-widest text-muted-foreground px-4 md:px-8 py-4 md:py-5 h-auto font-bold">
-              Nome
-            </TableHead>
-            <TableHead className="text-[10px] md:text-label-sm uppercase tracking-widest text-muted-foreground py-4 md:py-5 h-auto font-bold">
-              Tipo
-            </TableHead>
-            <TableHead className="text-[10px] md:text-label-sm uppercase tracking-widest text-muted-foreground px-4 md:px-8 py-4 md:py-5 h-auto font-bold text-right">
-              Ações
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {categories.map((category) => {
-            const Icon = getIconByName(category.icon)
-            return (
-              <TableRow
-                key={category.id}
-                className="border-white/8 hover:bg-white/5 transition-colors group"
-              >
-                <TableCell className="px-4 md:px-8 py-4 md:py-5">
-                  <div className="flex items-center gap-3 md:gap-4">
-                    <div className="size-8 md:size-10 shrink-0 rounded-lg md:rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface-variant border border-white/8 shadow-inner">
-                      <Icon className="size-4 md:size-5 stroke-[2px]" />
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      {categories.map((category) => {
+        const Icon = getIconByName(category.icon)
+        return (
+          <Card
+            key={category.id}
+            className="group relative flex flex-col gap-5 p-5 bg-white/5 backdrop-blur-xl border-white/8 hover:bg-white/10 transition-all shadow-2xl overflow-hidden"
+          >
+            {/* Header Content */}
+            <div className="flex items-center gap-4">
+              <div className="size-12 shrink-0 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface-variant border border-white/8 shadow-inner">
+                <Icon className="size-6 stroke-[2px]" />
+              </div>
+              <div className="flex flex-col gap-0.5 min-w-0">
+                <span className="text-lg font-bold text-on-surface truncate">
+                  {category.name}
+                </span>
+                <div
+                  className={cn(
+                    'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold border w-fit uppercase tracking-wider',
+                    category.scope === 'INCOME'
+                      ? 'bg-primary/10 text-primary border-primary/20'
+                      : category.scope === 'OUTCOME'
+                        ? 'bg-error/10 text-error border-error/20'
+                        : 'bg-white/10 text-muted-foreground border-white/20'
+                  )}
+                >
+                  {category.scope === 'INCOME' ? (
+                    <ArrowUpIcon className="size-2.5 stroke-[3px]" />
+                  ) : category.scope === 'OUTCOME' ? (
+                    <ArrowDownIcon className="size-2.5 stroke-[3px]" />
+                  ) : (
+                    <div className="flex -space-x-1">
+                      <ArrowUpIcon className="size-2.5 stroke-[3px]" />
+                      <ArrowDownIcon className="size-2.5 stroke-[3px]" />
                     </div>
-                    <span className="text-sm md:text-body-md font-semibold text-on-surface truncate max-w-[120px] md:max-w-none">
-                      {category.name}
-                    </span>
-                  </div>
-                </TableCell>
-                <TableCell className="py-4 md:py-5">
-                  <div
-                    className={cn(
-                      'inline-flex items-center gap-1.5 md:gap-2 px-2 md:px-4 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold border shrink-0',
-                      category.scope === 'INCOME'
-                        ? 'bg-primary/10 text-primary border-primary/20'
-                        : 'bg-error/10 text-error border-error/20'
-                    )}
-                  >
-                    {category.scope === 'INCOME' ? (
-                      <ArrowUpIcon className="size-2.5 md:size-3 stroke-[3px]" />
-                    ) : (
-                      <ArrowDownIcon className="size-2.5 md:size-3 stroke-[3px]" />
-                    )}
-                    <span className="hidden xs:inline">
-                      {SCOPE_LABELS[category.scope]}
-                    </span>
-                    <span className="xs:hidden">
-                      {category.scope === 'INCOME' ? 'Entrada' : 'Saída'}
-                    </span>
-                  </div>
-                </TableCell>
-                <TableCell className="px-4 md:px-8 py-4 md:py-5 text-right">
-                  <div className="flex justify-end gap-1 md:gap-2 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleEdit(category)}
-                      disabled={isDeleting}
-                      className="size-8 md:size-9 hover:bg-white/10 text-muted-foreground hover:text-on-surface"
-                    >
-                      <Edit2Icon className="size-3.5 md:size-4 stroke-[2px]" />
-                      <span className="sr-only">Editar</span>
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="size-8 md:size-9 text-muted-foreground hover:text-error hover:bg-error/10"
-                      onClick={() => setCategoryToDelete(category.id)}
-                      disabled={isDeleting}
-                    >
-                      <Trash2Icon className="size-3.5 md:size-4 stroke-[2px]" />
-                      <span className="sr-only">Excluir</span>
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            )
-          })}
-        </TableBody>
-      </Table>
+                  )}
+                  {SCOPE_LABELS[category.scope]}
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons - Centered and Always Visible */}
+            <div className="flex items-center justify-center gap-2 pt-2 border-t border-white/5">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleEdit(category)}
+                disabled={isDeleting}
+                className="flex-1 h-9 hover:bg-white/10 text-muted-foreground hover:text-on-surface gap-2"
+              >
+                <Edit2Icon className="size-3.5 stroke-[2px]" />
+                <span className="text-xs font-semibold">Editar</span>
+              </Button>
+              <div className="w-px h-4 bg-white/10" />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex-1 h-9 text-muted-foreground hover:text-error hover:bg-error/10 gap-2"
+                onClick={() => setCategoryToDelete(category.id)}
+                disabled={isDeleting}
+              >
+                <Trash2Icon className="size-3.5 stroke-[2px]" />
+                <span className="text-xs font-semibold">Excluir</span>
+              </Button>
+            </div>
+          </Card>
+        )
+      })}
 
       <SaveCategoryDialog
         category={editingCategory || undefined}
