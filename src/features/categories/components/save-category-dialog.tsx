@@ -1,3 +1,4 @@
+import { Controller } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -13,17 +14,9 @@ import {
   FieldLabel
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
 import { ICON_MAP } from '@/utils/icon-mapper'
 import { AVAILABLE_ICONS } from '@/utils/icons'
 import { useCategoryForm } from '../hooks/use-category-form'
-import type { SaveCategorySchema } from '../schemas/save-category-schema'
 import type { Category } from '../types'
 
 interface SaveCategoryDialogProps {
@@ -83,23 +76,38 @@ export function SaveCategoryDialog({
 
             <Field>
               <div className="space-y-2">
-                <FieldLabel htmlFor="scope">Tipo</FieldLabel>
-                <Select
-                  onValueChange={(value) =>
-                    form.setValue('scope', value as SaveCategorySchema['scope'])
-                  }
-                  value={form.watch('scope')}
-                  disabled={isPending}
-                >
-                  <SelectTrigger id="scope">
-                    <SelectValue placeholder="Selecione o tipo" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="BOTH">Entrada e Saída</SelectItem>
-                    <SelectItem value="INCOME">Apenas Entrada</SelectItem>
-                    <SelectItem value="OUTCOME">Apenas Saída</SelectItem>
-                  </SelectContent>
-                </Select>
+                <FieldLabel>Tipo</FieldLabel>
+                <Controller
+                  control={form.control}
+                  name="scope"
+                  render={({ field }) => (
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { value: 'BOTH', label: 'Ambos' },
+                        { value: 'INCOME', label: 'Entrada' },
+                        { value: 'OUTCOME', label: 'Saída' }
+                      ].map((option) => {
+                        const isSelected = field.value === option.value
+
+                        return (
+                          <button
+                            key={option.value}
+                            type="button"
+                            onClick={() => field.onChange(option.value)}
+                            className={`flex h-10 items-center justify-center rounded-md border text-sm font-medium transition-all hover:bg-muted ${
+                              isSelected
+                                ? 'border-primary bg-primary/10 text-primary ring-2 ring-primary ring-offset-2 ring-offset-background'
+                                : 'border-border text-muted-foreground'
+                            }`}
+                            disabled={isPending}
+                          >
+                            {option.label}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  )}
+                />
               </div>
               {form.formState.errors.scope && (
                 <FieldErrorComponent
@@ -110,32 +118,36 @@ export function SaveCategoryDialog({
             </Field>
 
             <Field>
-              <div className="space-y-2">
-                <FieldLabel htmlFor="icon">Ícone</FieldLabel>
-                <Select
-                  onValueChange={(value) => form.setValue('icon', value)}
-                  value={form.watch('icon')}
-                  disabled={isPending}
-                >
-                  <SelectTrigger id="icon">
-                    <SelectValue placeholder="Selecione um ícone" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {AVAILABLE_ICONS.map((icon) => {
-                      const Icon = ICON_MAP[icon as keyof typeof ICON_MAP]
-                      return (
-                        <SelectItem key={icon} value={icon}>
-                          <div className="flex items-center gap-2">
-                            <Icon className="size-4" />
-                            <span className="capitalize">
-                              {icon.replace(/-/g, ' ')}
-                            </span>
-                          </div>
-                        </SelectItem>
-                      )
-                    })}
-                  </SelectContent>
-                </Select>
+              <div className="space-y-3">
+                <FieldLabel>Ícone</FieldLabel>
+                <Controller
+                  control={form.control}
+                  name="icon"
+                  render={({ field }) => (
+                    <div className="flex gap-2 flex-wrap">
+                      {AVAILABLE_ICONS.map((icon) => {
+                        const Icon = ICON_MAP[icon as keyof typeof ICON_MAP]
+                        const isSelected = field.value === icon
+
+                        return (
+                          <button
+                            key={icon}
+                            type="button"
+                            onClick={() => field.onChange(icon)}
+                            className={`size-10 flex aspect-square items-center justify-center rounded-md border transition-all hover:bg-muted ${
+                              isSelected
+                                ? 'border-primary bg-primary/10 text-primary ring-2 ring-primary ring-offset-2 ring-offset-background'
+                                : 'border-border text-muted-foreground'
+                            }`}
+                            disabled={isPending}
+                          >
+                            <Icon className="size-5" />
+                          </button>
+                        )
+                      })}
+                    </div>
+                  )}
+                />
               </div>
               {form.formState.errors.icon && (
                 <FieldErrorComponent

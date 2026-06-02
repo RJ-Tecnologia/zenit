@@ -49,19 +49,5 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "typescript": "~6.0.3",
     "vite": "^8.0.14"
-  },
-  "pnpm": {
-    "overrides": {
-      "path-to-regexp": "8.4.0",
-      "defu": "6.1.5",
-      "brace-expansion": "5.0.6",
-      "hono": "4.12.16",
-      "@hono/node-serve": "1.19.13",
-      "fast-uri": "3.1.2",
-      "kysely": "0.28.17",
-      "follow-redirects": "1.16.0",
-      "postcss": "8.5.10",
-      "qs": "6.15.2"
-    }
   }
 }

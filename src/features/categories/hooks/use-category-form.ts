@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { createCategoryRequest } from '@/http/create-category'
 import { updateCategoryRequest } from '@/http/update-category'
+import { AVAILABLE_ICONS } from '@/utils/icons'
 import {
   type SaveCategorySchema,
   saveCategorySchema
@@ -25,19 +26,17 @@ export function useCategoryForm({ category, onSuccess }: UseCategoryFormProps) {
     defaultValues: {
       name: category?.name ?? '',
       scope: category?.scope ?? 'BOTH',
-      icon: category?.icon ?? ''
+      icon: category?.icon ?? AVAILABLE_ICONS[0]
     }
   })
 
   useEffect(() => {
-    if (category) {
-      form.reset({
-        name: category.name,
-        scope: category.scope,
-        icon: category.icon
-      })
-    }
-  }, [category, form])
+    form.reset({
+      name: category?.name ?? '',
+      scope: category?.scope ?? 'BOTH',
+      icon: category?.icon ?? AVAILABLE_ICONS[0]
+    })
+  }, [category, form.reset])
 
   const { mutateAsync: createCategory, isPending: isCreating } = useMutation({
     mutationFn: createCategoryRequest,
@@ -59,13 +58,15 @@ export function useCategoryForm({ category, onSuccess }: UseCategoryFormProps) {
         await updateCategory({
           categoryId: category.id,
           name: data.name,
-          scope: data.scope
+          scope: data.scope,
+          icon: data.icon
         })
         toast.success('Categoria atualizada com sucesso!')
       } else {
         const response = await createCategory({
           name: data.name,
-          scope: data.scope
+          scope: data.scope,
+          icon: data.icon
         })
         toast.success('Categoria criada com sucesso!')
         onSuccess?.(response.category)
